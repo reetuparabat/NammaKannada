@@ -1,5 +1,5 @@
 """
-NammaConnect Data Expansion Script
+NammaKannada Data Expansion Script
 ===================================
 Expands the dataset with:
 - 2 New Categories (Food & Darshinis, Everyday Essentials & Living)
@@ -20,10 +20,10 @@ from app.models.conversation import Conversation, ConversationStep, Conversation
 from app.models.quiz import QuizQuestion, QuizOption
 
 
-def expand_data():
-    db = SessionLocal()
+def expand_data(db_session=None):
+    db = db_session if db_session is not None else SessionLocal()
     try:
-        print("Starting NammaConnect Data Expansion...")
+        print("Starting NammaKannada Data Expansion...")
 
         # ─────────────────────────────────────────────────────────────
         # 1. NEW CATEGORIES
@@ -394,7 +394,8 @@ def expand_data():
         print("Data Expansion Completed Successfully!")
 
     finally:
-        db.close()
+        if db_session is None:
+            db.close()
 
 
 if __name__ == "__main__":

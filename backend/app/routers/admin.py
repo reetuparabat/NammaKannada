@@ -47,13 +47,18 @@ def admin_create_phrase(data: PhraseCreate, db: Session = Depends(get_db)):
     return phrase
 
 
-@router.patch("/content/phrases/{phrase_id}", response_model=PhraseOut, dependencies=[Depends(require_admin)])
-def admin_update_phrase(phrase_id: int, data: PhraseUpdate, db: Session = Depends(get_db)):
-    """Update phrase fields (only draft or under_review phrases can be edited freely)."""
+@router.patch("/content/phrases/{phrase_id}", response_model=PhraseOut)
+def admin_update_phrase(
+    phrase_id: int,
+    data: PhraseUpdate,
+    admin_user: str = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
+    """Update phrase fields. If published, linguistic modifications automatically revert status to draft."""
     phrase = db.query(Phrase).filter(Phrase.id == phrase_id).first()
     if not phrase:
         raise HTTPException(status_code=404, detail="Phrase not found")
-    return update_phrase(db, phrase, data.model_dump(exclude_none=True))
+    return update_phrase(db, phrase, data.model_dump(exclude_none=True), admin_user=admin_user)
 
 
 @router.post("/content/phrases/{phrase_id}/submit-review", response_model=PhraseOut, dependencies=[Depends(require_admin)])
@@ -67,8 +72,13 @@ def submit_for_review(phrase_id: int, db: Session = Depends(get_db)):
     return phrase
 
 
-@router.post("/content/phrases/{phrase_id}/approve", response_model=PhraseOut, dependencies=[Depends(require_admin)])
-def approve_phrase(phrase_id: int, comments: str = "", db: Session = Depends(get_db)):
+@router.post("/content/phrases/{phrase_id}/approve", response_model=PhraseOut)
+def approve_phrase(
+    phrase_id: int,
+    comments: str = "",
+    admin_user: str = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
     phrase = db.query(Phrase).filter(Phrase.id == phrase_id).first()
     if not phrase:
         raise HTTPException(status_code=404, detail="Phrase not found")
@@ -77,7 +87,7 @@ def approve_phrase(phrase_id: int, comments: str = "", db: Session = Depends(get
         raise HTTPException(status_code=400, detail=error)
     review = PhraseReview(
         phrase_id=phrase_id,
-        reviewer_identifier="admin",
+        reviewer_identifier=admin_user,
         review_status="approved",
         comments=comments,
     )
@@ -108,8 +118,13 @@ def archive_phrase(phrase_id: int, db: Session = Depends(get_db)):
     return phrase
 
 
-@router.post("/content/phrases/{phrase_id}/reject", response_model=PhraseOut, dependencies=[Depends(require_admin)])
-def reject_phrase(phrase_id: int, comments: str = "", db: Session = Depends(get_db)):
+@router.post("/content/phrases/{phrase_id}/reject", response_model=PhraseOut)
+def reject_phrase(
+    phrase_id: int,
+    comments: str = "",
+    admin_user: str = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
     phrase = db.query(Phrase).filter(Phrase.id == phrase_id).first()
     if not phrase:
         raise HTTPException(status_code=404, detail="Phrase not found")
@@ -118,7 +133,7 @@ def reject_phrase(phrase_id: int, comments: str = "", db: Session = Depends(get_
         raise HTTPException(status_code=400, detail=error)
     review = PhraseReview(
         phrase_id=phrase_id,
-        reviewer_identifier="admin",
+        reviewer_identifier=admin_user,
         review_status="rejected",
         comments=comments,
     )

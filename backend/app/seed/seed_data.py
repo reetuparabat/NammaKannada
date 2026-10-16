@@ -1,5 +1,5 @@
 """
-NammaConnect Seed Script
+NammaKannada Seed Script
 ========================
 Creates initial categories, scenarios, phrases, conversations, and quizzes.
 
@@ -27,41 +27,73 @@ from app.models.quiz import QuizQuestion, QuizOption
 Base.metadata.create_all(bind=engine)
 
 
-def seed_all():
-    db = SessionLocal()
-    try:
-        # Check if already seeded
-        if db.query(Category).count() > 0:
-            print("Database already seeded. Skipping.")
-            return
+def get_or_create_category(db, name, slug, description, icon, display_order):
+    cat = db.query(Category).filter(Category.slug == slug).first()
+    if not cat:
+        cat = Category(
+            name=name,
+            slug=slug,
+            description=description,
+            icon=icon,
+            display_order=display_order,
+        )
+        db.add(cat)
+        db.flush()
+    return cat
 
-        print("Seeding NammaConnect database...")
+
+def get_or_create_scenario(db, category_id, title, slug, description, learning_objectives, estimated_minutes, difficulty, display_order):
+    scen = db.query(Scenario).filter(Scenario.slug == slug).first()
+    if not scen:
+        scen = Scenario(
+            category_id=category_id,
+            title=title,
+            slug=slug,
+            description=description,
+            learning_objectives=learning_objectives,
+            estimated_minutes=estimated_minutes,
+            difficulty=difficulty,
+            display_order=display_order,
+        )
+        db.add(scen)
+        db.flush()
+    return scen
+
+
+def seed_all(db_session=None):
+    db = db_session if db_session is not None else SessionLocal()
+    try:
+        print("Starting unified idempotent seeding for NammaKannada...")
 
         # ================================================================
         # CATEGORIES
         # ================================================================
-        cat_transport = Category(
+        cat_transport = get_or_create_category(
+            db,
             name="Transportation & Travel",
             slug="transportation",
             description="Navigate buses, autos, trains, and local travel in Karnataka with confidence.",
             icon="Bus",
             display_order=1,
         )
-        cat_shopping = Category(
+        cat_shopping = get_or_create_category(
+            db,
             name="Shopping & Markets",
             slug="shopping",
             description="Ask prices, bargain politely, find products, and shop at local markets.",
             icon="ShoppingBag",
             display_order=2,
         )
-        cat_education = Category(
+        cat_education = get_or_create_category(
+            db,
             name="Education & College",
             slug="education",
             description="Communicate with staff, ask about schedules, and navigate campus in Kannada.",
             icon="GraduationCap",
             display_order=3,
         )
-        cat_health = Category(
+        cat_health = get_or_create_category(
+            db,
             name="Basic Healthcare",
             slug="healthcare",
             description="Describe symptoms, ask for help, and understand basic instructions in Kannada. (Language assistance only — not medical advice.)",
@@ -69,13 +101,11 @@ def seed_all():
             display_order=4,
         )
 
-        db.add_all([cat_transport, cat_shopping, cat_education, cat_health])
-        db.flush()
-
         # ================================================================
         # SCENARIOS — TRANSPORTATION
         # ================================================================
-        s_bus = Scenario(
+        s_bus = get_or_create_scenario(
+            db,
             category_id=cat_transport.id,
             title="Taking a City Bus",
             slug="taking-city-bus",
@@ -85,7 +115,8 @@ def seed_all():
             difficulty="beginner",
             display_order=1,
         )
-        s_directions = Scenario(
+        s_directions = get_or_create_scenario(
+            db,
             category_id=cat_transport.id,
             title="Asking for Directions",
             slug="asking-directions",
@@ -95,7 +126,8 @@ def seed_all():
             difficulty="beginner",
             display_order=2,
         )
-        s_auto = Scenario(
+        s_auto = get_or_create_scenario(
+            db,
             category_id=cat_transport.id,
             title="Booking an Auto-Rickshaw",
             slug="booking-auto",
@@ -106,13 +138,11 @@ def seed_all():
             display_order=3,
         )
 
-        db.add_all([s_bus, s_directions, s_auto])
-        db.flush()
-
         # ================================================================
         # SCENARIOS — SHOPPING
         # ================================================================
-        s_price = Scenario(
+        s_price = get_or_create_scenario(
+            db,
             category_id=cat_shopping.id,
             title="Asking for Prices",
             slug="asking-prices",
@@ -122,7 +152,8 @@ def seed_all():
             difficulty="beginner",
             display_order=1,
         )
-        s_bargain = Scenario(
+        s_bargain = get_or_create_scenario(
+            db,
             category_id=cat_shopping.id,
             title="Polite Bargaining",
             slug="polite-bargaining",
@@ -132,7 +163,8 @@ def seed_all():
             difficulty="intermediate",
             display_order=2,
         )
-        s_find = Scenario(
+        s_find = get_or_create_scenario(
+            db,
             category_id=cat_shopping.id,
             title="Finding a Product",
             slug="finding-product",
@@ -143,13 +175,11 @@ def seed_all():
             display_order=3,
         )
 
-        db.add_all([s_price, s_bargain, s_find])
-        db.flush()
-
         # ================================================================
         # SCENARIOS — EDUCATION
         # ================================================================
-        s_classroom = Scenario(
+        s_classroom = get_or_create_scenario(
+            db,
             category_id=cat_education.id,
             title="Finding a Classroom",
             slug="finding-classroom",
@@ -159,7 +189,8 @@ def seed_all():
             difficulty="beginner",
             display_order=1,
         )
-        s_staff = Scenario(
+        s_staff = get_or_create_scenario(
+            db,
             category_id=cat_education.id,
             title="Talking to College Staff",
             slug="talking-college-staff",
@@ -169,7 +200,8 @@ def seed_all():
             difficulty="intermediate",
             display_order=2,
         )
-        s_schedule = Scenario(
+        s_schedule = get_or_create_scenario(
+            db,
             category_id=cat_education.id,
             title="Asking About Schedules",
             slug="asking-schedules",
@@ -180,13 +212,11 @@ def seed_all():
             display_order=3,
         )
 
-        db.add_all([s_classroom, s_staff, s_schedule])
-        db.flush()
-
         # ================================================================
         # SCENARIOS — HEALTHCARE
         # ================================================================
-        s_symptom = Scenario(
+        s_symptom = get_or_create_scenario(
+            db,
             category_id=cat_health.id,
             title="Describing a Symptom",
             slug="describing-symptom",
@@ -196,7 +226,8 @@ def seed_all():
             difficulty="beginner",
             display_order=1,
         )
-        s_clinic = Scenario(
+        s_clinic = get_or_create_scenario(
+            db,
             category_id=cat_health.id,
             title="Asking for a Clinic or Hospital",
             slug="asking-clinic",
@@ -206,7 +237,8 @@ def seed_all():
             difficulty="beginner",
             display_order=2,
         )
-        s_understanding = Scenario(
+        s_understanding = get_or_create_scenario(
+            db,
             category_id=cat_health.id,
             title="Understanding Basic Instructions",
             slug="understanding-instructions",
@@ -216,9 +248,6 @@ def seed_all():
             difficulty="intermediate",
             display_order=3,
         )
-
-        db.add_all([s_symptom, s_clinic, s_understanding])
-        db.flush()
 
         # ================================================================
         # PHRASES — TRANSPORTATION (Taking a Bus)
@@ -339,235 +368,275 @@ def seed_all():
             classroom_phrases + staff_phrases + schedule_phrases +
             symptom_phrases + clinic_phrases + instruction_phrases
         )
-        db.add_all(all_phrases)
+        for p_data in all_phrases:
+            existing = db.query(Phrase).filter(
+                Phrase.scenario_id == p_data.scenario_id,
+                Phrase.kannada_text == p_data.kannada_text
+            ).first()
+            if not existing:
+                db.add(p_data)
         db.flush()
 
         # ================================================================
         # CONVERSATIONS — Taking a City Bus
         # ================================================================
-        conv_bus = Conversation(
-            scenario_id=s_bus.id,
-            title="Boarding the right bus",
-            description="Practice asking about the bus route, buying a ticket, and asking when to get off.",
-            is_published=True,
-        )
-        db.add(conv_bus)
-        db.flush()
+        conv_bus = db.query(Conversation).filter(Conversation.scenario_id == s_bus.id).first()
+        if not conv_bus:
+            conv_bus = Conversation(
+                scenario_id=s_bus.id,
+                title="Boarding the right bus",
+                description="Practice asking about the bus route, buying a ticket, and asking when to get off.",
+                is_published=True,
+            )
+            db.add(conv_bus)
+            db.flush()
 
-        # Steps
-        step_b1 = ConversationStep(conversation_id=conv_bus.id, speaker="narrator", message="You are at a bus stop. A bus arrives. You want to go to Majestic (Kempegowda Bus Station).", step_type="prompt", display_order=1)
-        db.add(step_b1); db.flush()
+            # Steps
+            step_b1 = ConversationStep(conversation_id=conv_bus.id, speaker="narrator", message="You are at a bus stop. A bus arrives. You want to go to Majestic (Kempegowda Bus Station).", step_type="prompt", display_order=1)
+            db.add(step_b1); db.flush()
 
-        step_b2 = ConversationStep(conversation_id=conv_bus.id, speaker="user", message="You approach the conductor. What do you ask?", step_type="choice", display_order=2)
-        db.add(step_b2); db.flush()
+            step_b2 = ConversationStep(conversation_id=conv_bus.id, speaker="user", message="You approach the conductor. What do you ask?", step_type="choice", display_order=2)
+            db.add(step_b2); db.flush()
 
-        step_b3 = ConversationStep(conversation_id=conv_bus.id, speaker="conductor", message="ಹೌದು, ಈ ಬಸ್ ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುತ್ತದೆ.", message_kannada="ಹೌದು, ಈ ಬಸ್ ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುತ್ತದೆ.", message_transliteration="Houd, ee bas Majestic-ge hooguttade.", step_type="prompt", display_order=3)
-        db.add(step_b3); db.flush()
+            step_b3 = ConversationStep(conversation_id=conv_bus.id, speaker="conductor", message="ಹೌದು, ಈ ಬಸ್ ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುತ್ತದೆ.", message_kannada="ಹೌದು, ಈ ಬಸ್ ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುತ್ತದೆ.", message_transliteration="Houd, ee bas Majestic-ge hooguttade.", step_type="prompt", display_order=3)
+            db.add(step_b3); db.flush()
 
-        step_b4 = ConversationStep(conversation_id=conv_bus.id, speaker="user", message="The conductor says the bus goes to Majestic. What do you say next?", step_type="choice", display_order=4)
-        db.add(step_b4); db.flush()
+            step_b4 = ConversationStep(conversation_id=conv_bus.id, speaker="user", message="The conductor says the bus goes to Majestic. What do you say next?", step_type="choice", display_order=4)
+            db.add(step_b4); db.flush()
 
-        step_b5 = ConversationStep(conversation_id=conv_bus.id, speaker="conductor", message="ಒಂದು ಟಿಕೆಟ್ ಹತ್ತು ರೂಪಾಯಿ.", message_kannada="ಒಂದು ಟಿಕೆಟ್ ಹತ್ತು ರೂಪಾಯಿ.", message_transliteration="Ondu ticket hattu roopaayi.", step_type="prompt", display_order=5)
-        db.add(step_b5); db.flush()
+            step_b5 = ConversationStep(conversation_id=conv_bus.id, speaker="conductor", message="ಒಂದು ಟಿಕೆಟ್ ಹತ್ತು ರೂಪಾಯಿ.", message_kannada="ಒಂದು ಟಿಕೆಟ್ ಹತ್ತು ರೂಪಾಯಿ.", message_transliteration="Ondu ticket hattu roopaayi.", step_type="prompt", display_order=5)
+            db.add(step_b5); db.flush()
 
-        step_b6 = ConversationStep(conversation_id=conv_bus.id, speaker="narrator", message="Great! You bought a ticket. Remember to ask when to get off. Conversation complete!", step_type="end", display_order=6)
-        db.add(step_b6); db.flush()
+            step_b6 = ConversationStep(conversation_id=conv_bus.id, speaker="narrator", message="Great! You bought a ticket. Remember to ask when to get off. Conversation complete!", step_type="end", display_order=6)
+            db.add(step_b6); db.flush()
 
-        # Options
-        opt_b2_good = ConversationOption(step_id=step_b2.id, option_text="ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುವ ಬಸ್ ಯಾವುದು?", option_transliteration="Majestic-ge hooguva bas yaavudu?", is_correct=True, next_step_id=step_b3.id, feedback="Excellent! Asking which bus goes to your destination is exactly right.", display_order=1)
-        opt_b2_ok = ConversationOption(step_id=step_b2.id, option_text="ಇಲ್ಲಿ ನಿಲ್ಲಿಸಿ.", option_transliteration="Illi nillisi.", is_correct=False, next_step_id=step_b3.id, feedback="That means 'Stop here' — useful later, but not right now. Try asking about the route.", display_order=2)
-        opt_b2_wrong = ConversationOption(step_id=step_b2.id, option_text="ಚಿಲ್ಲರೆ ಇದೆಯೇ?", option_transliteration="Chillare ideye?", is_correct=False, next_step_id=step_b3.id, feedback="That means 'Do you have change?' — useful when paying, but not the right first question.", display_order=3)
+            # Options
+            opt_b2_good = ConversationOption(step_id=step_b2.id, option_text="ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುವ ಬಸ್ ಯಾವುದು?", option_transliteration="Majestic-ge hooguva bas yaavudu?", is_correct=True, next_step_id=step_b3.id, feedback="Excellent! Asking which bus goes to your destination is exactly right.", display_order=1)
+            opt_b2_ok = ConversationOption(step_id=step_b2.id, option_text="ಇಲ್ಲಿ ನಿಲ್ಲಿಸಿ.", option_transliteration="Illi nillisi.", is_correct=False, next_step_id=step_b3.id, feedback="That means 'Stop here' — useful later, but not right now. Try asking about the route.", display_order=2)
+            opt_b2_wrong = ConversationOption(step_id=step_b2.id, option_text="ಚಿಲ್ಲರೆ ಇದೆಯೇ?", option_transliteration="Chillare ideye?", is_correct=False, next_step_id=step_b3.id, feedback="That means 'Do you have change?' — useful when paying, but not the right first question.", display_order=3)
 
-        opt_b4_good = ConversationOption(step_id=step_b4.id, option_text="ಒಂದು ಟಿಕೆಟ್ ಕೊಡಿ.", option_transliteration="Ondu ticket kodi.", is_correct=True, next_step_id=step_b5.id, feedback="Perfect! Asking for one ticket is the right next step.", display_order=1)
-        opt_b4_ok = ConversationOption(step_id=step_b4.id, option_text="ಧನ್ಯವಾದ.", option_transliteration="Dhanyavaada.", is_correct=False, next_step_id=step_b5.id, feedback="'Thank you' is polite but you haven't bought a ticket yet!", display_order=2)
+            opt_b4_good = ConversationOption(step_id=step_b4.id, option_text="ಒಂದು ಟಿಕೆಟ್ ಕೊಡಿ.", option_transliteration="Ondu ticket kodi.", is_correct=True, next_step_id=step_b5.id, feedback="Perfect! Asking for one ticket is the right next step.", display_order=1)
+            opt_b4_ok = ConversationOption(step_id=step_b4.id, option_text="ಧನ್ಯವಾದ.", option_transliteration="Dhanyavaada.", is_correct=False, next_step_id=step_b5.id, feedback="'Thank you' is polite but you haven't bought a ticket yet!", display_order=2)
 
-        db.add_all([opt_b2_good, opt_b2_ok, opt_b2_wrong, opt_b4_good, opt_b4_ok])
-        db.flush()
+            db.add_all([opt_b2_good, opt_b2_ok, opt_b2_wrong, opt_b4_good, opt_b4_ok])
+            db.flush()
 
-        conv_bus.start_step_id = step_b1.id
-        db.flush()
+            conv_bus.start_step_id = step_b1.id
+            db.flush()
 
         # ================================================================
         # CONVERSATIONS — Asking for Directions
         # ================================================================
-        conv_dir = Conversation(
-            scenario_id=s_directions.id,
-            title="Finding the Railway Station",
-            description="Practice asking for directions and understanding basic direction words.",
-            is_published=True,
-        )
-        db.add(conv_dir)
-        db.flush()
+        conv_dir = db.query(Conversation).filter(Conversation.scenario_id == s_directions.id).first()
+        if not conv_dir:
+            conv_dir = Conversation(
+                scenario_id=s_directions.id,
+                title="Finding the Railway Station",
+                description="Practice asking for directions and understanding basic direction words.",
+                is_published=True,
+            )
+            db.add(conv_dir)
+            db.flush()
 
-        step_d1 = ConversationStep(conversation_id=conv_dir.id, speaker="narrator", message="You are lost and need to reach the railway station. You see a shopkeeper.", step_type="prompt", display_order=1)
-        db.add(step_d1); db.flush()
+            step_d1 = ConversationStep(conversation_id=conv_dir.id, speaker="narrator", message="You are lost and need to reach the railway station. You see a shopkeeper.", step_type="prompt", display_order=1)
+            db.add(step_d1); db.flush()
 
-        step_d2 = ConversationStep(conversation_id=conv_dir.id, speaker="user", message="How do you ask the shopkeeper for directions?", step_type="choice", display_order=2)
-        db.add(step_d2); db.flush()
+            step_d2 = ConversationStep(conversation_id=conv_dir.id, speaker="user", message="How do you ask the shopkeeper for directions?", step_type="choice", display_order=2)
+            db.add(step_d2); db.flush()
 
-        step_d3 = ConversationStep(conversation_id=conv_dir.id, speaker="shopkeeper", message="ನೇರವಾಗಿ ಹೋಗಿ, ನಂತರ ಎಡಕ್ಕೆ ತಿರುಗಿ.", message_kannada="ನೇರವಾಗಿ ಹೋಗಿ, ನಂತರ ಎಡಕ್ಕೆ ತಿರುಗಿ.", message_transliteration="Neeravagi hogi, nantara edakke tirugi.", step_type="prompt", display_order=3)
-        db.add(step_d3); db.flush()
+            step_d3 = ConversationStep(conversation_id=conv_dir.id, speaker="shopkeeper", message="ನೇರವಾಗಿ ಹೋಗಿ, ನಂತರ ಎಡಕ್ಕೆ ತಿರುಗಿ.", message_kannada="ನೇರವಾಗಿ ಹೋಗಿ, ನಂತರ ಎಡಕ್ಕೆ ತಿರುಗಿ.", message_transliteration="Neeravagi hogi, nantara edakke tirugi.", step_type="prompt", display_order=3)
+            db.add(step_d3); db.flush()
 
-        step_d4 = ConversationStep(conversation_id=conv_dir.id, speaker="narrator", message="The shopkeeper said: 'Go straight, then turn left.' Great job navigating! Conversation complete!", step_type="end", display_order=4)
-        db.add(step_d4); db.flush()
+            step_d4 = ConversationStep(conversation_id=conv_dir.id, speaker="narrator", message="The shopkeeper said: 'Go straight, then turn left.' Great job navigating! Conversation complete!", step_type="end", display_order=4)
+            db.add(step_d4); db.flush()
 
-        opt_d2_good = ConversationOption(step_id=step_d2.id, option_text="ದಾರಿ ತಪ್ಪಿದ್ದೇನೆ. ರೈಲ್ವೆ ನಿಲ್ದಾಣ ಎಲ್ಲಿದೆ?", option_transliteration="Daari tappiddene. Railway nildaana ellide?", is_correct=True, next_step_id=step_d3.id, feedback="Excellent! Saying 'I am lost' and asking for the station is clear and polite.", display_order=1)
-        opt_d2_ok = ConversationOption(step_id=step_d2.id, option_text="ನೇರವಾಗಿ ಹೋಗಿ.", option_transliteration="Neeravagi hogi.", is_correct=False, next_step_id=step_d3.id, feedback="That means 'Go straight' — that is a direction, not a question!", display_order=2)
-        db.add_all([opt_d2_good, opt_d2_ok])
-        db.flush()
+            opt_d2_good = ConversationOption(step_id=step_d2.id, option_text="ದಾರಿ ತಪ್ಪಿದ್ದೇನೆ. ರೈಲ್ವೆ ನಿಲ್ದಾಣ ಎಲ್ಲಿದೆ?", option_transliteration="Daari tappiddene. Railway nildaana ellide?", is_correct=True, next_step_id=step_d3.id, feedback="Excellent! Saying 'I am lost' and asking for the station is clear and polite.", display_order=1)
+            opt_d2_ok = ConversationOption(step_id=step_d2.id, option_text="ನೇರವಾಗಿ ಹೋಗಿ.", option_transliteration="Neeravagi hogi.", is_correct=False, next_step_id=step_d3.id, feedback="That means 'Go straight' — that is a direction, not a question!", display_order=2)
+            db.add_all([opt_d2_good, opt_d2_ok])
+            db.flush()
 
-        conv_dir.start_step_id = step_d1.id
-        db.flush()
+            conv_dir.start_step_id = step_d1.id
+            db.flush()
 
         # ================================================================
         # CONVERSATIONS — Asking for Prices (Shopping)
         # ================================================================
-        conv_price = Conversation(
-            scenario_id=s_price.id,
-            title="Buying vegetables at the market",
-            description="Practice asking for the price of vegetables and requesting a discount.",
-            is_published=True,
-        )
-        db.add(conv_price)
-        db.flush()
+        conv_price = db.query(Conversation).filter(Conversation.scenario_id == s_price.id).first()
+        if not conv_price:
+            conv_price = Conversation(
+                scenario_id=s_price.id,
+                title="Buying vegetables at the market",
+                description="Practice asking for the price of vegetables and requesting a discount.",
+                is_published=True,
+            )
+            db.add(conv_price)
+            db.flush()
 
-        step_p1 = ConversationStep(conversation_id=conv_price.id, speaker="narrator", message="You are at a vegetable market. You want to buy tomatoes.", step_type="prompt", display_order=1)
-        db.add(step_p1); db.flush()
+            step_p1 = ConversationStep(conversation_id=conv_price.id, speaker="narrator", message="You are at a vegetable market. You want to buy tomatoes.", step_type="prompt", display_order=1)
+            db.add(step_p1); db.flush()
 
-        step_p2 = ConversationStep(conversation_id=conv_price.id, speaker="user", message="How do you ask the price?", step_type="choice", display_order=2)
-        db.add(step_p2); db.flush()
+            step_p2 = ConversationStep(conversation_id=conv_price.id, speaker="user", message="How do you ask the price?", step_type="choice", display_order=2)
+            db.add(step_p2); db.flush()
 
-        step_p3 = ConversationStep(conversation_id=conv_price.id, speaker="vendor", message="ಒಂದು ಕಿಲೋ ಐವತ್ತು ರೂಪಾಯಿ.", message_kannada="ಒಂದು ಕಿಲೋ ಐವತ್ತು ರೂಪಾಯಿ.", message_transliteration="Ondu kilo aivattu roopaayi.", step_type="prompt", display_order=3)
-        db.add(step_p3); db.flush()
+            step_p3 = ConversationStep(conversation_id=conv_price.id, speaker="vendor", message="ಒಂದು ಕಿಲೋ ಐವತ್ತು ರೂಪಾಯಿ.", message_kannada="ಒಂದು ಕಿಲೋ ಐವತ್ತು ರೂಪಾಯಿ.", message_transliteration="Ondu kilo aivattu roopaayi.", step_type="prompt", display_order=3)
+            db.add(step_p3); db.flush()
 
-        step_p4 = ConversationStep(conversation_id=conv_price.id, speaker="user", message="The vendor says 50 rupees per kg. You think it's a bit high. What do you say?", step_type="choice", display_order=4)
-        db.add(step_p4); db.flush()
+            step_p4 = ConversationStep(conversation_id=conv_price.id, speaker="user", message="The vendor says 50 rupees per kg. You think it's a bit high. What do you say?", step_type="choice", display_order=4)
+            db.add(step_p4); db.flush()
 
-        step_p5 = ConversationStep(conversation_id=conv_price.id, speaker="narrator", message="Well done! You practised asking for a price and negotiating. Conversation complete!", step_type="end", display_order=5)
-        db.add(step_p5); db.flush()
+            step_p5 = ConversationStep(conversation_id=conv_price.id, speaker="narrator", message="Well done! You practised asking for a price and negotiating. Conversation complete!", step_type="end", display_order=5)
+            db.add(step_p5); db.flush()
 
-        opt_p2_good = ConversationOption(step_id=step_p2.id, option_text="ಒಂದು ಕಿಲೋ ಟೊಮ್ಯಾಟೊ ಎಷ್ಟು?", option_transliteration="Ondu kilo tomato eshtu?", is_correct=True, next_step_id=step_p3.id, feedback="Great! Asking the per-kilo price is exactly right.", display_order=1)
-        opt_p2_ok = ConversationOption(step_id=step_p2.id, option_text="ಧನ್ಯವಾದ.", option_transliteration="Dhanyavaada.", is_correct=False, next_step_id=step_p3.id, feedback="'Thank you' is polite, but you haven't asked the price yet!", display_order=2)
+            opt_p2_good = ConversationOption(step_id=step_p2.id, option_text="ಒಂದು ಕಿಲೋ ಟೊಮ್ಯಾಟೊ ಎಷ್ಟು?", option_transliteration="Ondu kilo tomato eshtu?", is_correct=True, next_step_id=step_p3.id, feedback="Great! Asking the per-kilo price is exactly right.", display_order=1)
+            opt_p2_ok = ConversationOption(step_id=step_p2.id, option_text="ಧನ್ಯವಾದ.", option_transliteration="Dhanyavaada.", is_correct=False, next_step_id=step_p3.id, feedback="'Thank you' is polite, but you haven't asked the price yet!", display_order=2)
 
-        opt_p4_good = ConversationOption(step_id=step_p4.id, option_text="ಸ್ವಲ್ಪ ಕಡಿಮೆ ಮಾಡಿ.", option_transliteration="Svalpa kadime maadi.", is_correct=True, next_step_id=step_p5.id, feedback="Perfect! Politely asking for a small reduction is appropriate.", display_order=1)
-        opt_p4_ok = ConversationOption(step_id=step_p4.id, option_text="ತಾಜಾ ಇದೆಯೇ?", option_transliteration="Taaja ideye?", is_correct=False, next_step_id=step_p5.id, feedback="'Is it fresh?' is a good question, but the more natural response to a high price is to ask for a reduction.", display_order=2)
+            opt_p4_good = ConversationOption(step_id=step_p4.id, option_text="ಸ್ವಲ್ಪ ಕಡಿಮೆ ಮಾಡಿ.", option_transliteration="Svalpa kadime maadi.", is_correct=True, next_step_id=step_p5.id, feedback="Perfect! Politely asking for a small reduction is appropriate.", display_order=1)
+            opt_p4_ok = ConversationOption(step_id=step_p4.id, option_text="ತಾಜಾ ಇದೆಯೇ?", option_transliteration="Taaja ideye?", is_correct=False, next_step_id=step_p5.id, feedback="'Is it fresh?' is a good question, but the more natural response to a high price is to ask for a reduction.", display_order=2)
 
-        db.add_all([opt_p2_good, opt_p2_ok, opt_p4_good, opt_p4_ok])
-        db.flush()
+            db.add_all([opt_p2_good, opt_p2_ok, opt_p4_good, opt_p4_ok])
+            db.flush()
 
-        conv_price.start_step_id = step_p1.id
-        db.flush()
+            conv_price.start_step_id = step_p1.id
+            db.flush()
 
         # ================================================================
         # QUIZZES — Taking a City Bus
         # ================================================================
-        q1 = QuizQuestion(scenario_id=s_bus.id, question_text="How do you ask 'Which bus goes to Majestic?' in Kannada?", question_type="multiple_choice", explanation="'ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುವ ಬಸ್ ಯಾವುದು?' literally asks 'which bus goes to Majestic?'", display_order=1)
-        db.add(q1); db.flush()
-        db.add_all([
-            QuizOption(question_id=q1.id, option_text="ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುವ ಬಸ್ ಯಾವುದು?", is_correct=True, display_order=1),
-            QuizOption(question_id=q1.id, option_text="ಇಲ್ಲಿ ನಿಲ್ಲಿಸಿ.", is_correct=False, display_order=2),
-            QuizOption(question_id=q1.id, option_text="ಚಿಲ್ಲರೆ ಇದೆಯೇ?", is_correct=False, display_order=3),
-            QuizOption(question_id=q1.id, option_text="ಎಡಕ್ಕೆ ತಿರುಗಿ.", is_correct=False, display_order=4),
-        ])
+        if not db.query(QuizQuestion).filter(QuizQuestion.scenario_id == s_bus.id).first():
+            q1 = QuizQuestion(scenario_id=s_bus.id, question_text="How do you ask 'Which bus goes to Majestic?' in Kannada?", question_type="multiple_choice", explanation="'ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುವ ಬಸ್ ಯಾವುದು?' literally asks 'which bus goes to Majestic?'", display_order=1)
+            db.add(q1); db.flush()
+            db.add_all([
+                QuizOption(question_id=q1.id, option_text="ಮೆಜೆಸ್ಟಿಕ್‌ಗೆ ಹೋಗುವ ಬಸ್ ಯಾವುದು?", is_correct=True, display_order=1),
+                QuizOption(question_id=q1.id, option_text="ಇಲ್ಲಿ ನಿಲ್ಲಿಸಿ.", is_correct=False, display_order=2),
+                QuizOption(question_id=q1.id, option_text="ಚಿಲ್ಲರೆ ಇದೆಯೇ?", is_correct=False, display_order=3),
+                QuizOption(question_id=q1.id, option_text="ಎಡಕ್ಕೆ ತಿರುಗಿ.", is_correct=False, display_order=4),
+            ])
 
-        q2 = QuizQuestion(scenario_id=s_bus.id, question_text="What does 'ಒಂದು ಟಿಕೆಟ್ ಕೊಡಿ' mean in English?", question_type="meaning_match", explanation="'ಒಂದು ಟಿಕೆಟ್ ಕೊಡಿ' means 'Please give me one ticket'. 'ಕೊಡಿ' is the polite form of 'give'.", display_order=2)
-        db.add(q2); db.flush()
-        db.add_all([
-            QuizOption(question_id=q2.id, option_text="Please give me one ticket.", is_correct=True, display_order=1),
-            QuizOption(question_id=q2.id, option_text="Stop the bus here.", is_correct=False, display_order=2),
-            QuizOption(question_id=q2.id, option_text="Where does this bus go?", is_correct=False, display_order=3),
-            QuizOption(question_id=q2.id, option_text="Is the bus on time?", is_correct=False, display_order=4),
-        ])
+            q2 = QuizQuestion(scenario_id=s_bus.id, question_text="What does 'ಒಂದು ಟಿಕೆಟ್ ಕೊಡಿ' mean in English?", question_type="meaning_match", explanation="'ಒಂದು ಟಿಕೆಟ್ ಕೊಡಿ' means 'Please give me one ticket'. 'ಕೊಡಿ' is the polite form of 'give'.", display_order=2)
+            db.add(q2); db.flush()
+            db.add_all([
+                QuizOption(question_id=q2.id, option_text="Please give me one ticket.", is_correct=True, display_order=1),
+                QuizOption(question_id=q2.id, option_text="Stop the bus here.", is_correct=False, display_order=2),
+                QuizOption(question_id=q2.id, option_text="Where does this bus go?", is_correct=False, display_order=3),
+                QuizOption(question_id=q2.id, option_text="Is the bus on time?", is_correct=False, display_order=4),
+            ])
 
-        q3 = QuizQuestion(scenario_id=s_bus.id, question_text="Which phrase means 'Please stop here'?", question_type="multiple_choice", explanation="'ಇಲ್ಲಿ ನಿಲ್ಲಿಸಿ, ದಯವಿಟ್ಟು' = 'Stop here, please'. 'ದಯವಿಟ್ಟು' is the Kannada word for 'please'.", display_order=3)
-        db.add(q3); db.flush()
-        db.add_all([
-            QuizOption(question_id=q3.id, option_text="ಇಲ್ಲಿ ನಿಲ್ಲಿಸಿ, ದಯವಿಟ್ಟು.", is_correct=True, display_order=1),
-            QuizOption(question_id=q3.id, option_text="ನಾನು ಎಲ್ಲಿ ಇಳಿಯಬೇಕು?", is_correct=False, display_order=2),
-            QuizOption(question_id=q3.id, option_text="ಬಸ್ ಸ್ಟಾಪ್ ಎಲ್ಲಿದೆ?", is_correct=False, display_order=3),
-            QuizOption(question_id=q3.id, option_text="ತಡ ಆಗುತ್ತದೆಯೇ?", is_correct=False, display_order=4),
-        ])
+            q3 = QuizQuestion(scenario_id=s_bus.id, question_text="Which phrase means 'Please stop here'?", question_type="multiple_choice", explanation="'ಇಲ್ಲಿ ನಿಲ್ಲಿಸಿ, ದಯವಿಟ್ಟು' = 'Stop here, please'. 'ದಯವಿಟ್ಟು' is the Kannada word for 'please'.", display_order=3)
+            db.add(q3); db.flush()
+            db.add_all([
+                QuizOption(question_id=q3.id, option_text="ಇಲ್ಲಿ ನಿಲ್ಲಿಸಿ, ದಯವಿಟ್ಟು.", is_correct=True, display_order=1),
+                QuizOption(question_id=q3.id, option_text="ನಾನು ಎಲ್ಲಿ ಇಳಿಯಬೇಕು?", is_correct=False, display_order=2),
+                QuizOption(question_id=q3.id, option_text="ಬಸ್ ಸ್ಟಾಪ್ ಎಲ್ಲಿದೆ?", is_correct=False, display_order=3),
+                QuizOption(question_id=q3.id, option_text="ತಡ ಆಗುತ್ತದೆಯೇ?", is_correct=False, display_order=4),
+            ])
 
-        q4 = QuizQuestion(scenario_id=s_bus.id, question_text="What is the correct transliteration for 'ಬಸ್ ಸ್ಟಾಪ್ ಎಲ್ಲಿದೆ?'?", question_type="multiple_choice", explanation="'Bas stop ellide?' is the correct pronunciation guide for 'Where is the bus stop?'", display_order=4)
-        db.add(q4); db.flush()
-        db.add_all([
-            QuizOption(question_id=q4.id, option_text="Bas stop ellide?", is_correct=True, display_order=1),
-            QuizOption(question_id=q4.id, option_text="Illi nillisi.", is_correct=False, display_order=2),
-            QuizOption(question_id=q4.id, option_text="Chillare ideye?", is_correct=False, display_order=3),
-            QuizOption(question_id=q4.id, option_text="Naanu elli iliyabeeku?", is_correct=False, display_order=4),
-        ])
+            q4 = QuizQuestion(scenario_id=s_bus.id, question_text="What is the correct transliteration for 'ಬಸ್ ಸ್ಟಾಪ್ ಎಲ್ಲಿದೆ?'?", question_type="multiple_choice", explanation="'Bas stop ellide?' is the correct pronunciation guide for 'Where is the bus stop?'", display_order=4)
+            db.add(q4); db.flush()
+            db.add_all([
+                QuizOption(question_id=q4.id, option_text="Bas stop ellide?", is_correct=True, display_order=1),
+                QuizOption(question_id=q4.id, option_text="Illi nillisi.", is_correct=False, display_order=2),
+                QuizOption(question_id=q4.id, option_text="Chillare ideye?", is_correct=False, display_order=3),
+                QuizOption(question_id=q4.id, option_text="Naanu elli iliyabeeku?", is_correct=False, display_order=4),
+            ])
 
         # QUIZZES — Asking for Prices
-        q5 = QuizQuestion(scenario_id=s_price.id, question_text="How do you say 'How much does this cost?' in Kannada?", question_type="multiple_choice", explanation="'ಇದರ ಬೆಲೆ ಎಷ್ಟು?' is the standard way to ask for the price of something.", display_order=1)
-        db.add(q5); db.flush()
-        db.add_all([
-            QuizOption(question_id=q5.id, option_text="ಇದರ ಬೆಲೆ ಎಷ್ಟು?", is_correct=True, display_order=1),
-            QuizOption(question_id=q5.id, option_text="ತಾಜಾ ಇದೆಯೇ?", is_correct=False, display_order=2),
-            QuizOption(question_id=q5.id, option_text="ಸರಿ, ನಾನು ಒಪ್ಪುತ್ತೇನೆ.", is_correct=False, display_order=3),
-            QuizOption(question_id=q5.id, option_text="ಧನ್ಯವಾದ.", is_correct=False, display_order=4),
-        ])
+        if not db.query(QuizQuestion).filter(QuizQuestion.scenario_id == s_price.id).first():
+            q5 = QuizQuestion(scenario_id=s_price.id, question_text="How do you say 'How much does this cost?' in Kannada?", question_type="multiple_choice", explanation="'ಇದರ ಬೆಲೆ ಎಷ್ಟು?' is the standard way to ask for the price of something.", display_order=1)
+            db.add(q5); db.flush()
+            db.add_all([
+                QuizOption(question_id=q5.id, option_text="ಇದರ ಬೆಲೆ ಎಷ್ಟು?", is_correct=True, display_order=1),
+                QuizOption(question_id=q5.id, option_text="ತಾಜಾ ಇದೆಯೇ?", is_correct=False, display_order=2),
+                QuizOption(question_id=q5.id, option_text="ಸರಿ, ನಾನು ಒಪ್ಪುತ್ತೇನೆ.", is_correct=False, display_order=3),
+                QuizOption(question_id=q5.id, option_text="ಧನ್ಯವಾದ.", is_correct=False, display_order=4),
+            ])
 
-        q6 = QuizQuestion(scenario_id=s_price.id, question_text="What does 'ಸ್ವಲ್ಪ ಕಡಿಮೆ ಮಾಡಿ' mean?", question_type="meaning_match", explanation="'Svalpa kadime maadi' literally means 'make it a little less' — a polite way to ask for a small discount.", display_order=2)
-        db.add(q6); db.flush()
-        db.add_all([
-            QuizOption(question_id=q6.id, option_text="Please reduce the price a little.", is_correct=True, display_order=1),
-            QuizOption(question_id=q6.id, option_text="Take one hundred rupees.", is_correct=False, display_order=2),
-            QuizOption(question_id=q6.id, option_text="Is it fresh?", is_correct=False, display_order=3),
-            QuizOption(question_id=q6.id, option_text="It is too expensive.", is_correct=False, display_order=4),
-        ])
+            q6 = QuizQuestion(scenario_id=s_price.id, question_text="What does 'ಸ್ವಲ್ಪ ಕಡಿಮೆ ಮಾಡಿ' mean?", question_type="meaning_match", explanation="'Svalpa kadime maadi' literally means 'make it a little less' — a polite way to ask for a small discount.", display_order=2)
+            db.add(q6); db.flush()
+            db.add_all([
+                QuizOption(question_id=q6.id, option_text="Please reduce the price a little.", is_correct=True, display_order=1),
+                QuizOption(question_id=q6.id, option_text="Take one hundred rupees.", is_correct=False, display_order=2),
+                QuizOption(question_id=q6.id, option_text="Is it fresh?", is_correct=False, display_order=3),
+                QuizOption(question_id=q6.id, option_text="It is too expensive.", is_correct=False, display_order=4),
+            ])
 
         # QUIZZES — Describing a Symptom
-        q7 = QuizQuestion(scenario_id=s_symptom.id, question_text="How do you say 'I have a fever' in Kannada?", question_type="multiple_choice", explanation="'ನನಗೆ ಜ್ವರ ಇದೆ' = 'I have a fever'. 'ನನಗೆ' means 'to me/I have' and 'ಜ್ವರ' means fever.", display_order=1)
-        db.add(q7); db.flush()
-        db.add_all([
-            QuizOption(question_id=q7.id, option_text="ನನಗೆ ಜ್ವರ ಇದೆ.", is_correct=True, display_order=1),
-            QuizOption(question_id=q7.id, option_text="ತಲೆ ನೋವು ಇದೆ.", is_correct=False, display_order=2),
-            QuizOption(question_id=q7.id, option_text="ಔಷಧಿ ಎಲ್ಲಿ ಸಿಗುತ್ತದೆ?", is_correct=False, display_order=3),
-            QuizOption(question_id=q7.id, option_text="ವೈದ್ಯರನ್ನು ನೋಡಬೇಕು.", is_correct=False, display_order=4),
-        ])
+        if not db.query(QuizQuestion).filter(QuizQuestion.scenario_id == s_symptom.id).first():
+            q7 = QuizQuestion(scenario_id=s_symptom.id, question_text="How do you say 'I have a fever' in Kannada?", question_type="multiple_choice", explanation="'ನನಗೆ ಜ್ವರ ಇದೆ' = 'I have a fever'. 'ನನಗೆ' means 'to me/I have' and 'ಜ್ವರ' means fever.", display_order=1)
+            db.add(q7); db.flush()
+            db.add_all([
+                QuizOption(question_id=q7.id, option_text="ನನಗೆ ಜ್ವರ ಇದೆ.", is_correct=True, display_order=1),
+                QuizOption(question_id=q7.id, option_text="ತಲೆ ನೋವು ಇದೆ.", is_correct=False, display_order=2),
+                QuizOption(question_id=q7.id, option_text="ಔಷಧಿ ಎಲ್ಲಿ ಸಿಗುತ್ತದೆ?", is_correct=False, display_order=3),
+                QuizOption(question_id=q7.id, option_text="ವೈದ್ಯರನ್ನು ನೋಡಬೇಕು.", is_correct=False, display_order=4),
+            ])
 
-        q8 = QuizQuestion(scenario_id=s_symptom.id, question_text="What does 'ತಿಳಿಯಲಿಲ್ಲ. ಮತ್ತೊಮ್ಮೆ ಹೇಳಿ.' mean?", question_type="meaning_match", explanation="'Tiliyalilla. Mattomme heli.' = 'I did not understand. Please say it again.' Very useful when you need clarification.", display_order=2)
-        db.add(q8); db.flush()
-        db.add_all([
-            QuizOption(question_id=q8.id, option_text="I did not understand. Please say it again.", is_correct=True, display_order=1),
-            QuizOption(question_id=q8.id, option_text="I have understood.", is_correct=False, display_order=2),
-            QuizOption(question_id=q8.id, option_text="Call an ambulance.", is_correct=False, display_order=3),
-            QuizOption(question_id=q8.id, option_text="Where is the pharmacy?", is_correct=False, display_order=4),
-        ])
+            q8 = QuizQuestion(scenario_id=s_symptom.id, question_text="What does 'ತಿಳಿಯಲಿಲ್ಲ. ಮತ್ತೊಮ್ಮೆ ಹೇಳಿ.' mean?", question_type="meaning_match", explanation="'Tiliyalilla. Mattomme heli.' = 'I did not understand. Please say it again.' Very useful when you need clarification.", display_order=2)
+            db.add(q8); db.flush()
+            db.add_all([
+                QuizOption(question_id=q8.id, option_text="I did not understand. Please say it again.", is_correct=True, display_order=1),
+                QuizOption(question_id=q8.id, option_text="I have understood.", is_correct=False, display_order=2),
+                QuizOption(question_id=q8.id, option_text="Call an ambulance.", is_correct=False, display_order=3),
+                QuizOption(question_id=q8.id, option_text="Where is the pharmacy?", is_correct=False, display_order=4),
+            ])
 
         # QUIZZES — Finding Classroom
-        q9 = QuizQuestion(scenario_id=s_classroom.id, question_text="What does 'ದಯವಿಟ್ಟು ಸಹಾಯ ಮಾಡಿ' mean?", question_type="meaning_match", explanation="'Dayavittu sahaaya maadi' = 'Please help me'. 'ದಯವಿಟ್ಟು' means 'please'.", display_order=1)
-        db.add(q9); db.flush()
-        db.add_all([
-            QuizOption(question_id=q9.id, option_text="Please help me.", is_correct=True, display_order=1),
-            QuizOption(question_id=q9.id, option_text="I am a new student.", is_correct=False, display_order=2),
-            QuizOption(question_id=q9.id, option_text="Where is the library?", is_correct=False, display_order=3),
-            QuizOption(question_id=q9.id, option_text="Where is room ten?", is_correct=False, display_order=4),
-        ])
+        if not db.query(QuizQuestion).filter(QuizQuestion.scenario_id == s_classroom.id).first():
+            q9 = QuizQuestion(scenario_id=s_classroom.id, question_text="What does 'ದಯವಿಟ್ಟು ಸಹಾಯ ಮಾಡಿ' mean?", question_type="meaning_match", explanation="'Dayavittu sahaaya maadi' = 'Please help me'. 'ದಯವಿಟ್ಟು' means 'please'.", display_order=1)
+            db.add(q9); db.flush()
+            db.add_all([
+                QuizOption(question_id=q9.id, option_text="Please help me.", is_correct=True, display_order=1),
+                QuizOption(question_id=q9.id, option_text="I am a new student.", is_correct=False, display_order=2),
+                QuizOption(question_id=q9.id, option_text="Where is the library?", is_correct=False, display_order=3),
+                QuizOption(question_id=q9.id, option_text="Where is room ten?", is_correct=False, display_order=4),
+            ])
 
-        q10 = QuizQuestion(scenario_id=s_classroom.id, question_text="How do you say 'Where is the library?' in Kannada?", question_type="multiple_choice", explanation="'ಗ್ರಂಥಾಲಯ ಎಲ್ಲಿದೆ?' = 'Where is the library?' 'ಗ್ರಂಥಾಲಯ' (Granthaalaaya) is the Kannada word for library.", display_order=2)
-        db.add(q10); db.flush()
-        db.add_all([
-            QuizOption(question_id=q10.id, option_text="ಗ್ರಂಥಾಲಯ ಎಲ್ಲಿದೆ?", is_correct=True, display_order=1),
-            QuizOption(question_id=q10.id, option_text="ತರಗತಿ ಯಾವಾಗ ಶುರುವಾಗುತ್ತದೆ?", is_correct=False, display_order=2),
-            QuizOption(question_id=q10.id, option_text="ಫಾರ್ಮ್ ಎಲ್ಲಿ ಸಿಗುತ್ತದೆ?", is_correct=False, display_order=3),
-            QuizOption(question_id=q10.id, option_text="ಶುಲ್ಕ ಎಷ್ಟು ಕಟ್ಟಬೇಕು?", is_correct=False, display_order=4),
-        ])
+            q10 = QuizQuestion(scenario_id=s_classroom.id, question_text="How do you say 'Where is the library?' in Kannada?", question_type="multiple_choice", explanation="'ಗ್ರಂಥಾಲಯ ಎಲ್ಲಿದೆ?' = 'Where is the library?' 'ಗ್ರಂಥಾಲಯ' (Granthaalaaya) is the Kannada word for library.", display_order=2)
+            db.add(q10); db.flush()
+            db.add_all([
+                QuizOption(question_id=q10.id, option_text="ಗ್ರಂಥಾಲಯ ಎಲ್ಲಿದೆ?", is_correct=True, display_order=1),
+                QuizOption(question_id=q10.id, option_text="ತರಗತಿ ಯಾವಾಗ ಶುರುವಾಗುತ್ತದೆ?", is_correct=False, display_order=2),
+                QuizOption(question_id=q10.id, option_text="ಫಾರ್ಮ್ ಎಲ್ಲಿ ಸಿಗುತ್ತದೆ?", is_correct=False, display_order=3),
+                QuizOption(question_id=q10.id, option_text="ಶುಲ್ಕ ಎಷ್ಟು ಕಟ್ಟಬೇಕು?", is_correct=False, display_order=4),
+            ])
 
         db.commit()
-        print(f"Seeding complete!")
-        print(f"  Categories: 4")
-        print(f"  Scenarios: 12")
-        print(f"  Phrases: {len(all_phrases)}")
-        print(f"  Conversations: 3 (with steps and options)")
-        print(f"  Quiz questions: 10")
+
+        # Run expansion for the additional 2 categories, 6 scenarios, phrases, and interactions
+        try:
+            from app.seed.seed_expansion import expand_data
+            expand_data(db_session=db)
+        except Exception as e:
+            print(f"Expansion note: {e}")
+
+        # Run interactions for all key scenarios
+        try:
+            from app.seed.seed_scenarios_interactions import seed_interactions
+            seed_interactions(db_session=db)
+        except Exception as e:
+            print(f"Interactions note: {e}")
+
+        total_cats = db.query(Category).count()
+        total_scens = db.query(Scenario).count()
+        total_phrases = db.query(Phrase).count()
+        total_convs = db.query(Conversation).count()
+        total_quizzes = db.query(QuizQuestion).count()
+
+        print("=" * 60)
+        print("NAMMAKANNADA SEED VERIFICATION COMPLETE")
+        print(f"  Categories:       {total_cats}")
+        print(f"  Scenarios:        {total_scens}")
+        print(f"  Verified Phrases: {total_phrases}")
+        print(f"  Conversations:    {total_convs}")
+        print(f"  Quiz Questions:   {total_quizzes}")
+        print("=" * 60)
 
     except Exception as e:
         db.rollback()
         print(f"Seeding failed: {e}")
         raise
     finally:
-        db.close()
+        if db_session is None:
+            db.close()
 
 
 if __name__ == "__main__":

@@ -179,29 +179,56 @@ def search_phrases(db: Session, query: str) -> List[PhraseSearchResult]:
 
 
 def create_phrase(db: Session, data: dict) -> Phrase:
-    phrase = Phrase(**data, status=PhraseStatus.draft.value)
+    # Explicitly ensure status is always draft upon creation, ignoring any user-submitted status
+    clean_data = {k: v for k, v in data.items() if k != "status"}
+    phrase = Phrase(**clean_data, status=PhraseStatus.draft.value)
     db.add(phrase)
     db.commit()
     db.refresh(phrase)
     return phrase
 
 
-def update_phrase(db: Session, phrase: Phrase, data: dict) -> Phrase:
-    for key, val in data.items():
-        if val is not None:
+def update_phrase(db: Session, phrase: Phrase, data: dict, admin_user: str = "admin") -> Phrase:
+    """
+    Update phrase fields.
+    If the phrase was previously published or approved, modifying any linguistic content
+    automatically resets its status to draft, requiring re-review and approval.
+    Direct modification of the 'status' field via payload is strictly prohibited.
+    """
+    clean_data = {k: v for k, v in data.items() if k != "status"}
+    content_fields = {"kannada_text", "english_meaning", "transliteration", "context", "example", "formality_note"}
+    content_changed = False
+
+    for key, val in clean_data.items():
+        if val is not None and getattr(phrase, key, None) != val:
+            if key in content_fields:
+                content_changed = True
             setattr(phrase, key, val)
+
+    if content_changed and phrase.status in (PhraseStatus.published.value, PhraseStatus.approved.value):
+        old_status = phrase.status
+        phrase.status = PhraseStatus.draft.value
+        from app.models.phrase import PhraseReview
+        review = PhraseReview(
+            phrase_id=phrase.id,
+            reviewer_identifier=admin_user,
+            review_status="needs_revision",
+            comments=f"Content updated while in {old_status} state. Status automatically reverted to draft for re-review.",
+        )
+        db.add(review)
+
     db.commit()
     db.refresh(phrase)
     return phrase
 
 
 VALID_TRANSITIONS = {
-    PhraseStatus.draft.value: [PhraseStatus.under_review.value],
-    PhraseStatus.under_review.value: [PhraseStatus.approved.value, PhraseStatus.rejected.value],
-    PhraseStatus.approved.value: [PhraseStatus.published.value, PhraseStatus.archived.value],
-    PhraseStatus.published.value: [PhraseStatus.archived.value],
-    PhraseStatus.rejected.value: [PhraseStatus.draft.value],
-    PhraseStatus.archived.value: [],
+    PhraseStatus.draft.value: [PhraseStatus.under_review.value, PhraseStatus.archived.value],
+    PhraseStatus.under_review.value: [PhraseStatus.approved.value, PhraseStatus.rejected.value, PhraseStatus.archived.value],
+    PhraseStatus.approved.value: [PhraseStatus.published.value, PhraseStatus.draft.value, PhraseStatus.archived.value],
+    PhraseStatus.published.value: [PhraseStatus.archived.value, PhraseStatus.draft.value],
+    PhraseStatus.rejected.value: [PhraseStatus.draft.value, PhraseStatus.archived.value],
+    PhraseStatus.archived.value: [PhraseStatus.draft.value],
 }
 
 

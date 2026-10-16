@@ -1,4 +1,4 @@
-# NammaConnect | ನಮ್ಮ ಕನೆಕ್ಟ್
+# NammaKannada | ನಮ್ಮ ಕನ್ನಡ
 > **Practical Everyday Kannada Learning & Communication Web Application**  
 > *Developed for KSCST Student Project & Hackathons*  
 > **Problem Statements:** *Kannada in Everyday Life* • *Kannada for Everyone*
@@ -7,9 +7,9 @@
 
 ## 📖 Executive Summary
 
-**NammaConnect (ನಮ್ಮ ಕನೆಕ್ಟ್)** is a full-stack, responsive, context-aware web application designed to help non-Kannada speakers learn and communicate in real-world Karnataka situations.
+**NammaKannada (ನಮ್ಮ ಕನ್ನಡ)** is a full-stack, responsive, context-aware web application designed to help non-Kannada speakers learn and communicate in real-world Karnataka situations.
 
-Unlike generic translation tools or abstract flashcard apps, NammaConnect focuses on **task-oriented, situation-based communication**:
+Unlike generic translation tools or abstract flashcard apps, NammaKannada focuses on **task-oriented, situation-based communication**:
 - 🚌 **Commuting & Transit:** Asking for tickets, bus stop inquiries, auto-rickshaw fare negotiations.
 - 🛒 **Shopping & Markets:** Inquiring prices, bargaining politely, asking for quantities and UPI payments.
 - 🎓 **Education & Campus Life:** Finding classrooms, library inquiries, speaking with professors and office staff.
@@ -21,14 +21,14 @@ Unlike generic translation tools or abstract flashcard apps, NammaConnect focuse
 
 | Feature | Description |
 | :--- | :--- |
-| **Situation-Based Learning** | Explore 4 real-world categories and 12 realistic scenarios with contextual learning objectives. |
-| **Linguistic Triad** | Every phrase presents: **Kannada Script** (readable font) + **English Meaning** + **Phonetic Transliteration** for effortless pronunciation. |
-| **Native Audio Pronunciation** | One-tap native Kannada speech synthesis (`SpeechSynthesisUtterance` / `kn-IN`) for all phrases. |
-| **Interactive Branching Practice** | Realistic turn-by-turn conversational dialogue player simulating interactions with bus conductors, shopkeepers, and doctors. |
+| **Situation-Based Learning** | Explore **6 real-world categories** and **18 realistic scenarios** (114 verified everyday phrases) with contextual learning objectives. |
+| **Linguistic Triad** | Every phrase presents: **Kannada Script** (high-contrast typography) + **English Meaning** + **Phonetic Transliteration** for effortless pronunciation. |
+| **Native Audio Pronunciation** | One-tap native Kannada speech synthesis (`SpeechSynthesisUtterance` / `kn-IN`) with interactive Pronunciation Coach speed controls. |
+| **Interactive Branching Practice** | Realistic turn-by-turn conversational dialogue player simulating interactions with bus conductors, shopkeepers, auto drivers, landlords, and doctors. |
 | **Server-Scored Assessments** | Scenario-based quizzes with tamper-proof backend evaluation, immediate feedback, and pedagogical explanations. |
 | **Progress Dashboard & Bookmarks** | Track completed conversations, quiz performance, and pin vital everyday phrases for quick access. |
-| **Offline Phrasebook & PWA** | Custom Service Worker and cached phrasebook storage allowing travelers to access essential phrases even with zero network connectivity. |
-| **Content Lifecycle & Admin Portal** | Editorial governance workflow supporting `Draft` &rarr; `Under Review` &rarr; `Approved` &rarr; `Published` &rarr; `Archived` transitions. |
+| **Offline Phrasebook (IndexedDB + PWA)** | Custom Service Worker (`v2`) and asynchronous IndexedDB storage allowing travelers to access all essential phrases and audio offline. |
+| **Content Lifecycle & Admin Portal** | Editorial governance workflow supporting `Draft` &rarr; `Under Review` &rarr; `Approved` &rarr; `Published` &rarr; `Archived` transitions with reviewer audit logging. |
 
 ---
 
@@ -37,19 +37,20 @@ Unlike generic translation tools or abstract flashcard apps, NammaConnect focuse
 ### Frontend
 - **Framework:** Next.js 14 (App Router architecture)
 - **Language:** TypeScript 5 with strict typing
-- **Styling:** Tailwind CSS with custom dark mode and Kannada typography optimization
+- **Styling:** Tailwind CSS with accessible Dark / Light theme toggle and WCAG AA Kannada typography
 - **Icons:** Lucide React
 - **Data Fetching:** SWR for reactive cache invalidation and revalidation
-- **Audio:** Web Speech API (`SpeechSynthesis`) with `kn-IN` Kannada voice fallback
-- **Offline / PWA:** Service Worker (`sw.js`), Web App Manifest (`manifest.json`), LocalStorage offline caching
+- **Audio:** Web Speech API (`SpeechSynthesis`) with `kn-IN` voice synthesis and speech recognition
+- **Offline / PWA:** Service Worker (`sw.js` v2), Web App Manifest (`manifest.json`), IndexedDB phrase storage (`indexedDb.ts`)
+- **Testing:** Jest + React Testing Library (4 test suites, 7 tests)
 
 ### Backend
 - **Framework:** FastAPI (Python 3.11+)
 - **ORM & Database:** SQLAlchemy 2.0 with SQLite (dev) / PostgreSQL-ready architecture
 - **Database Migrations:** Alembic
 - **Validation:** Pydantic v2 schemas for strict request/response data contracts
-- **Security:** HTTP Basic Authentication with Bcrypt password hashing
-- **Testing:** Pytest with FastAPI TestClient (20 automated tests)
+- **Security:** HTTP Basic Authentication with Bcrypt password hashing and production startup credential validation
+- **Testing:** Pytest with in-memory SQLite isolation (23 automated tests)
 
 ---
 
@@ -122,7 +123,7 @@ cd backend
 # 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Seed database (creates nammaconnect.db with 4 categories, 12 scenarios, 63+ phrases)
+# 3. Seed database (idempotent master seed creating 6 categories, 18 scenarios, 114 phrases, conversations, quizzes)
 python -m app.seed.seed_data
 
 # 4. Start FastAPI server
@@ -155,47 +156,95 @@ Frontend will be accessible at:
 
 ---
 
+## 📱 Android App (Native APK & WebAPK)
+
+NammaKannada is fully packaged and ready to run on Android devices via two flexible pathways:
+
+### Option A: Native Android Studio Project (Capacitor)
+A complete, pre-configured native Gradle project is located in [`frontend/android`](file:///c:/hackathon/frontend/android):
+* **Package ID:** `com.nammakannada.app`
+* **App Name:** NammaKannada (ನಮ್ಮ ಕನ್ನಡ)
+* **Permissions Configured:** `INTERNET`, `ACCESS_NETWORK_STATE`, `RECORD_AUDIO` (for voice practice), and `usesCleartextTraffic="true"` (for local development backends).
+* **Launcher Icons:** Full density mipmap suite (`mdpi`, `hdpi`, `xhdpi`, `xxhdpi`, `xxxhdpi`) with round icon variants.
+
+**To build the Android APK:**
+1. Open **Android Studio**.
+2. Select **File &rarr; Open** and choose `c:\hackathon\frontend\android`.
+3. Let Gradle sync dependencies.
+4. Select **Build &rarr; Build Bundle(s) / APK(s) &rarr; Build APK(s)** to generate `app-debug.apk`.
+5. Connect your Android phone via USB debugging or start an Android Emulator, then click **Run 'app'**.
+
+*Note: For testing against your computer's local dev server from an Android Emulator, the app connects to `http://10.0.2.2:8000` (FastAPI) and `http://10.0.2.2:3000` (Next.js).*
+
+### Option B: Instant Android WebAPK (Zero-Install / One-Click)
+1. Open `http://<YOUR_COMPUTER_IP>:3000` in Google Chrome or Edge on any Android smartphone.
+2. Tap the **"Install Android App"** button in the top navigation bar (or Chrome's ⋮ menu &rarr; **Install App**).
+3. Android will install the native **WebAPK** onto your home screen and app drawer with a full-screen standalone window, offline caching, and native app gestures.
+
+---
+
 ## 🧪 Automated Testing
 
-### Backend Unit & Integration Tests (Pytest)
-Run the full test suite covering all routers, conversation state machines, quiz scoring, and admin authorization:
+### 1. Backend Unit & Integration Tests (Pytest)
+Run the full test suite with complete in-memory database isolation:
 
 ```bash
 cd backend
 .\.venv\Scripts\pytest -v
 ```
 
-**Test Coverage Summary (20/20 PASSED):**
+**Test Coverage Summary (23/23 PASSED):**
 - `test_health_check` & `test_root_endpoint`: Health probe and service metadata.
-- `test_list_categories`, `test_get_category_detail`, `test_get_category_not_found`: Category hierarchy.
-- `test_list_category_scenarios`: Scenario lookup and learning objectives.
+- `test_list_categories`, `test_get_category_detail`, `test_get_category_not_found`: Category hierarchy across all 6 categories.
+- `test_list_category_scenarios`: Scenario lookup and learning objectives across 18 scenarios.
 - `test_get_scenario_detail` & `test_get_scenario_phrases`: Published phrase filtering.
-- `test_get_phrase_by_id`: Transliteration and contextual notes integrity.
-- `test_search_phrases_empty` & `test_search_phrases_query`: Multi-field phrase search engine.
+- `test_get_phrase_by_id`: Transliteration, example sentences, and formality notes integrity.
+- `test_search_phrases_empty` & `test_search_phrases_query`: Multi-field Kannada phrase search engine.
 - `test_get_scenario_conversation`: Dialogue branching trees and speaker sequences.
 - `test_get_scenario_quiz`: Concealment of correct answers before submission.
 - `test_submit_quiz_scoring` & `test_submit_quiz_empty_answers`: Server-side answer scoring and explanation generation.
 - `test_offline_manifest`: Cacheable JSON schema for client offline storage.
 - `test_admin_content_unauthorized` & `test_admin_content_authorized`: HTTP Basic Auth role protection.
 - `test_admin_phrase_lifecycle`: Complete state transitions (`Draft` &rarr; `Under Review` &rarr; `Approved` &rarr; `Published` &rarr; `Archived`).
+- `test_unauthorized_user_cannot_approve_or_publish`: Security verification that unauthorized users cannot bypass review.
+- `test_modifying_published_phrase_reverts_to_draft`: Re-review enforcement when modifying approved content.
+- `test_draft_phrase_excluded_from_search_and_manifest`: Guarantees unpublished content never leaks to learners.
+
+### 2. Frontend Unit & Component Tests (Jest + React Testing Library)
+Run frontend UI and storage tests:
+
+```bash
+cd frontend
+npm test -- --ci
+```
+
+**Test Coverage Summary (4/4 Test Suites, 7/7 PASSED):**
+- `EmptyState.test.tsx`: Validates helpful empty and 404 in-development status states.
+- `ErrorMessage.test.tsx`: Verifies error alerts and user retry triggers.
+- `storage.test.ts`: Tests phrase bookmarking lifecycle and progress tracking without duplicate entries.
+- `indexedDb.test.ts`: Tests IndexedDB manifest caching, offline phrase lookup, and localStorage fallback.
 
 ---
 
-## 🔑 Administrative Credentials (Demo)
+## 🔑 Administrative Access & Security
 
 For evaluating the Content Management & Editorial Workflow:
 - **Portal URL:** `http://localhost:3000/admin`
-- **Username:** `admin`
-- **Password:** `admin123`
+- **Default Development Credentials:** Configured in `backend/.env` (default username `admin`).
+- **Production Security:** When running in production (`ENVIRONMENT=production`), the backend validates that strong, non-default credentials are provided on startup and rejects insecure defaults.
 
-The admin dashboard allows creating new phrases in `Draft` state and stepping them through editorial review, approval, publishing, and archiving.
+The admin dashboard provides a complete review workflow:
+1. Contributors submit phrases in `Draft` state.
+2. Reviewers inspect linguistic accuracy, pronunciation, and cultural context.
+3. Once approved, phrases transition to `Published` and become accessible to learners.
+4. Any linguistic modification to a published phrase automatically reverts it to `Draft` for verification.
 
 ---
 
-## 🌐 Offline Support & Resilience
+## 🌐 Offline Support & IndexedDB Resilience
 
-1. **Service Worker (`public/sw.js`):** Intercepts navigation and static asset requests, serving cached pages when offline.
-2. **Offline Phrasebook (`/offline`):** Users can tap "Download Phrasebook for Offline Use" to store all 63+ essential phrases with audio support directly in the browser.
+1. **Service Worker (`public/sw.js` v2):** Intercepts navigation and static asset requests, serving cached pages when offline. Administrative and authentication endpoints are strictly excluded.
+2. **Offline Phrasebook (`/offline`):** Powered by IndexedDB (`indexedDb.ts`) with automatic fallback to localStorage, enabling travelers to access all 114 verified Kannada phrases even with zero mobile data.
 3. **Resilient Speech:** Uses the local browser speech synthesizer, which functions seamlessly offline on supported devices.
 
 ---

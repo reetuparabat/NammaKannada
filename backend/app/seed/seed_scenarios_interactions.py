@@ -19,8 +19,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("seed_interactions")
 
 
-def seed_interactions():
-    db = SessionLocal()
+def seed_interactions(db_session=None):
+    db = db_session if db_session is not None else SessionLocal()
     try:
         logger.info("Starting conversation and quiz seeding for key scenarios...")
 
@@ -773,7 +773,8 @@ def seed_interactions():
         db.rollback()
         raise
     finally:
-        db.close()
+        if db_session is None:
+            db.close()
 
 
 if __name__ == "__main__":

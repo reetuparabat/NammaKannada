@@ -1,5 +1,5 @@
 """
-Comprehensive API and Business Logic Tests for NammaConnect.
+Comprehensive API and Business Logic Tests for NammaKannada.
 Tests all endpoints: Health, Categories, Scenarios, Phrases, Search,
 Conversations, Quizzes, Offline Manifest, and Admin Workflow.
 """
@@ -20,7 +20,7 @@ def test_root_endpoint(client):
     response = client.get("/")
     assert response.status_code == 200
     data = response.json()
-    assert "NammaConnect API" in data["name"]
+    assert "NammaKannada API" in data["name"]
     assert "/docs" in data["docs"]
 
 
@@ -247,7 +247,8 @@ def test_admin_phrase_lifecycle(client, admin_auth):
         "english_meaning": "Test phrase for editorial workflow",
         "transliteration": "Parikshaartha vaakya",
         "context": "Automated workflow testing",
-        "difficulty_level": "beginner",
+        "example": "ಪರೀಕ್ಷಾರ್ಥ ಉದಾಹರಣೆ",
+        "formality_note": "Formal",
     }
     create_res = client.post(
         "/api/v1/admin/content/phrases",
@@ -290,3 +291,80 @@ def test_admin_phrase_lifecycle(client, admin_auth):
     )
     assert archive_res.status_code == 200
     assert archive_res.json()["status"] == "archived"
+
+
+def test_unauthorized_user_cannot_approve_or_publish(client):
+    """
+    Ensure endpoints for approval and publishing strictly reject unauthenticated users.
+    """
+    app_res = client.post("/api/v1/admin/content/phrases/1/approve")
+    assert app_res.status_code == 401
+
+    pub_res = client.post("/api/v1/admin/content/phrases/1/publish")
+    assert pub_res.status_code == 401
+
+
+def test_modifying_published_phrase_reverts_to_draft(client, admin_auth):
+    """
+    Editing linguistic content of an approved/published phrase must automatically
+    revert its status back to 'draft' to require re-review.
+    """
+    # 1. Create, review, approve and publish a test phrase
+    create_res = client.post(
+        "/api/v1/admin/content/phrases",
+        json={
+            "scenario_id": 1,
+            "kannada_text": "ಮೂಲ ವಾಕ್ಯ",
+            "english_meaning": "Original published phrase",
+            "transliteration": "Moola vaakya",
+        },
+        headers=admin_auth,
+    )
+    p_id = create_res.json()["id"]
+    client.post(f"/api/v1/admin/content/phrases/{p_id}/submit-review", headers=admin_auth)
+    client.post(f"/api/v1/admin/content/phrases/{p_id}/approve", headers=admin_auth)
+    pub_res = client.post(f"/api/v1/admin/content/phrases/{p_id}/publish", headers=admin_auth)
+    assert pub_res.json()["status"] == "published"
+
+    # 2. Modify the phrase's English meaning as an admin
+    update_res = client.patch(
+        f"/api/v1/admin/content/phrases/{p_id}",
+        json={"english_meaning": "Altered meaning that requires re-verification"},
+        headers=admin_auth,
+    )
+    assert update_res.status_code == 200
+    updated_phrase = update_res.json()
+    # Must have reverted to draft!
+    assert updated_phrase["status"] == "draft"
+
+
+def test_draft_phrase_excluded_from_search_and_manifest(client, admin_auth):
+    """
+    Draft or unapproved phrases must NOT be returned in public search or offline manifest.
+    """
+    secret_term = "SuperSecretDraftQuery99"
+    create_res = client.post(
+        "/api/v1/admin/content/phrases",
+        json={
+            "scenario_id": 1,
+            "kannada_text": "ರಹಸ್ಯ ವಾಕ್ಯ",
+            "english_meaning": secret_term,
+            "transliteration": "Rahasya vaakya",
+        },
+        headers=admin_auth,
+    )
+    assert create_res.status_code == 200
+    assert create_res.json()["status"] == "draft"
+
+    # Search should NOT return this phrase
+    search_res = client.get(f"/api/v1/phrases/search?q={secret_term}")
+    assert search_res.status_code == 200
+    results = search_res.json()
+    assert len(results) == 0
+
+    # Offline manifest should NOT contain this phrase
+    manifest_res = client.get("/api/v1/offline/manifest")
+    assert manifest_res.status_code == 200
+    manifest_text = str(manifest_res.json())
+    assert secret_term not in manifest_text
+

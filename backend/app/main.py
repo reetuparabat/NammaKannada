@@ -1,6 +1,6 @@
 """
-NammaConnect FastAPI Application
-Kannada Learning and Communication Platform
+NammaKannada FastAPI Application
+Context-Aware Kannada Learning and Communication Platform
 """
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,11 +14,11 @@ from app.routers import categories, scenarios, offline, admin
 
 # Configure logging (never log sensitive data)
 logging.basicConfig(level=logging.INFO if not settings.debug else logging.DEBUG)
-logger = logging.getLogger("nammaconnect")
+logger = logging.getLogger("nammakannada")
 
 app = FastAPI(
-    title="NammaConnect API",
-    description="Kannada Learning and Communication Platform API",
+    title="NammaKannada API",
+    description="Context-Aware Kannada Learning and Communication Platform API",
     version=settings.app_version,
     docs_url="/docs",
     redoc_url="/redoc",
@@ -94,7 +94,7 @@ def health_check():
 @app.get("/", tags=["root"])
 def root():
     return {
-        "name": "NammaConnect API",
+        "name": "NammaKannada API",
         "version": settings.app_version,
         "docs": "/docs",
     }

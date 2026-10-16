@@ -20,18 +20,16 @@ test.describe('NammaKannada Learner Workflow E2E', () => {
     await expect(scenarioCard).toBeVisible();
     await scenarioCard.click();
 
-    // 4. View a phrase on scenario page
+    // 4. View phrases on scenario page & bookmark
     await page.waitForURL(/\/scenarios\/\d+/);
-    const phraseCard = page.locator('a[href^="/phrases/"]').first();
-    await expect(phraseCard).toBeVisible();
-    await phraseCard.click();
+    await expect(page.locator('h2:has-text("Phrases in This Scenario")')).toBeVisible();
+    const bookmarkButton = page.locator('button[aria-label*="Bookmark"], button[title*="Save phrase"]').first();
+    await expect(bookmarkButton).toBeVisible();
+    await bookmarkButton.click();
 
-    // 5. Bookmark the phrase on phrase detail page
-    await page.waitForURL(/\/phrases\/\d+/);
-    const bookmarkButton = page.locator('button[aria-label="Save phrase"], button:has-text("Save Phrase")').first();
-    if (await bookmarkButton.isVisible()) {
-      await bookmarkButton.click();
-    }
+    // 5. Open a phrase detail page
+    await page.goto('/phrases/1');
+    await expect(page.locator('h1, p.kannada-text').first()).toBeVisible();
 
     // 6. Complete conversation practice
     await page.goto('/practice/1');
@@ -69,6 +67,6 @@ test.describe('NammaKannada Learner Workflow E2E', () => {
     await page.goto('/admin');
     // Ensure credentials form is rendered
     await expect(page.locator('input[type="password"]')).toBeVisible();
-    await expect(page.locator('button:has-text("Sign In")')).toBeVisible();
+    await expect(page.locator('button:has-text("Authenticate")')).toBeVisible();
   });
 });

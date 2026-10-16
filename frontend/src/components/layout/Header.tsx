@@ -54,8 +54,8 @@ export function Header() {
           className="group flex items-center gap-3 transition-transform duration-150 active:scale-95"
         >
           <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 shadow-md shadow-amber-500/20 ring-1 ring-amber-300/30">
-            <span className="font-bold text-slate-950 text-xl leading-none select-none">
-              ನ
+            <span className="font-black text-slate-950 text-base tracking-tight leading-none select-none">
+              NK
             </span>
             <Sparkles className="absolute -top-1 -right-1 h-3.5 w-3.5 text-amber-200 animate-pulse" />
           </div>

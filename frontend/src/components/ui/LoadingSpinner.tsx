@@ -55,7 +55,7 @@ export function LoadingSpinner({
 
       {message && (
         <p
-          className={`font-medium tracking-wide text-slate-300 animate-pulse text-center ${textSizeClasses[size]}`}
+          className={`font-medium tracking-wide text-slate-600 dark:text-slate-300 animate-pulse text-center ${textSizeClasses[size]}`}
         >
           {message}
         </p>

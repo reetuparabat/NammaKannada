@@ -116,20 +116,20 @@ export function SearchBar({
           aria-autocomplete="list"
           aria-controls="search-results-list"
           role="combobox"
-          className="w-full rounded-xl border border-slate-700/60 bg-slate-900/90 py-3 pl-11 pr-10 text-sm text-white placeholder-slate-400 shadow-inner backdrop-blur-md transition-all duration-150 focus:border-amber-500/80 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
+          className="w-full rounded-xl border border-[#E2E8F0] bg-white py-3 pl-11 pr-10 text-sm text-slate-900 placeholder-slate-500 shadow-sm backdrop-blur-md transition-all duration-150 focus:border-amber-500/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/30 dark:border-slate-700/60 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-400 dark:shadow-inner dark:focus:bg-slate-900"
         />
 
         {/* Clear or Loading Icon */}
         <div className="absolute right-3 flex items-center gap-1.5">
           {isLoading && shouldFetch && (
-            <Loader2 className="h-4 w-4 animate-spin text-amber-400" />
+            <Loader2 className="h-4 w-4 animate-spin text-amber-500 dark:text-amber-400" />
           )}
           {query && !isLoading && (
             <button
               type="button"
               onClick={handleClear}
               aria-label="Clear search"
-              className="rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white"
+              className="rounded-md p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               <X className="h-4 w-4" />
             </button>
@@ -142,20 +142,20 @@ export function SearchBar({
         <div
           id="search-results-list"
           role="listbox"
-          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-xl border border-slate-700/70 bg-slate-900/95 p-2 shadow-2xl backdrop-blur-xl animate-in fade-in-0 zoom-in-95 duration-100"
+          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-xl border border-[#E2E8F0] bg-white/95 p-2 shadow-xl backdrop-blur-xl animate-in fade-in-0 zoom-in-95 duration-100 dark:border-slate-700/70 dark:bg-slate-900/95 dark:shadow-2xl"
         >
           {isLoading ? (
-            <div className="flex items-center justify-center gap-3 py-8 text-sm text-slate-400">
-              <Loader2 className="h-4 w-4 animate-spin text-amber-400" />
+            <div className="flex items-center justify-center gap-3 py-8 text-sm text-slate-600 dark:text-slate-400">
+              <Loader2 className="h-4 w-4 animate-spin text-amber-500 dark:text-amber-400" />
               <span>Searching phrases...</span>
             </div>
           ) : error ? (
-            <div className="py-6 text-center text-sm text-red-300">
+            <div className="py-6 text-center text-sm text-red-500 dark:text-red-300">
               Unable to search phrases at this time.
             </div>
           ) : results && results.length > 0 ? (
             <div className="flex flex-col gap-1">
-              <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+              <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Found {results.length} {results.length === 1 ? 'phrase' : 'phrases'}
               </div>
               {results.map((phrase) => (
@@ -163,29 +163,29 @@ export function SearchBar({
                   key={phrase.id}
                   type="button"
                   onClick={() => handleSelect(phrase.id)}
-                  className="group flex w-full items-start justify-between gap-3 rounded-lg p-3 text-left transition-colors hover:bg-slate-800/80 focus:bg-slate-800/80 focus:outline-none"
+                  className="group flex w-full items-start justify-between gap-3 rounded-lg p-3 text-left transition-colors hover:bg-amber-50/60 focus:bg-amber-50/60 focus:outline-none dark:hover:bg-slate-800/80 dark:focus:bg-slate-800/80"
                 >
                   <div className="flex-1 min-w-0">
                     {/* Kannada & Transliteration */}
                     <div className="flex flex-wrap items-baseline gap-2">
-                      <span className="text-base font-semibold text-amber-400 group-hover:text-amber-300 transition-colors">
+                      <span className="text-base font-semibold text-amber-600 group-hover:text-amber-700 transition-colors dark:text-amber-400 dark:group-hover:text-amber-300">
                         {phrase.kannada_text}
                       </span>
                       {phrase.transliteration && (
-                        <span className="text-xs italic text-slate-400">
+                        <span className="text-xs italic text-slate-500 dark:text-slate-400">
                           ({phrase.transliteration})
                         </span>
                       )}
                     </div>
 
                     {/* English Meaning */}
-                    <p className="mt-1 text-sm text-slate-200 line-clamp-1">
+                    <p className="mt-1 text-sm text-[#172554] font-medium line-clamp-1 dark:text-slate-200">
                       {phrase.english_meaning}
                     </p>
 
                     {/* Scenario / Category Tag */}
                     {(phrase.scenario_title || phrase.category_name) && (
-                      <div className="mt-2 flex items-center gap-1.5 text-xs text-amber-400/80">
+                      <div className="mt-2 flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400/80">
                         <BookOpen className="h-3 w-3 shrink-0" />
                         <span className="truncate">
                           {[phrase.category_name, phrase.scenario_title]
@@ -196,12 +196,12 @@ export function SearchBar({
                     )}
                   </div>
 
-                  <ChevronRight className="h-4 w-4 shrink-0 text-slate-500 transition-transform group-hover:translate-x-0.5 group-hover:text-amber-400" />
+                  <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5 group-hover:text-amber-600 dark:text-slate-500 dark:group-hover:text-amber-400" />
                 </button>
               ))}
             </div>
           ) : (
-            <div className="py-8 text-center text-sm text-slate-400">
+            <div className="py-8 text-center text-sm text-slate-600 dark:text-slate-400">
               <p>No phrases found for &ldquo;{debouncedQuery}&rdquo;</p>
               <p className="mt-1 text-xs text-slate-500">
                 Try searching for words like &ldquo;namaskara&rdquo;, &ldquo;coffee&rdquo;, or &ldquo;auto&rdquo;

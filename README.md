@@ -21,6 +21,7 @@ Unlike generic translation tools or abstract flashcard apps, NammaKannada focuse
 
 | Feature | Description |
 | :--- | :--- |
+| **Voice Translator (English ↔ Kannada)** | Bidirectional Speech-to-Text and translation engine allowing users to speak in English or Kannada, edit transcripts, translate in real time, and listen to authentic native pronunciation. |
 | **Situation-Based Learning** | Explore **6 real-world categories** and **18 realistic scenarios** (114 verified everyday phrases) with contextual learning objectives. |
 | **Linguistic Triad** | Every phrase presents: **Kannada Script** (high-contrast typography) + **English Meaning** + **Phonetic Transliteration** for effortless pronunciation. |
 | **Native Audio Pronunciation** | One-tap native Kannada speech synthesis (`SpeechSynthesisUtterance` / `kn-IN`) with interactive Pronunciation Coach speed controls. |
@@ -29,6 +30,7 @@ Unlike generic translation tools or abstract flashcard apps, NammaKannada focuse
 | **Progress Dashboard & Bookmarks** | Track completed conversations, quiz performance, and pin vital everyday phrases for quick access. |
 | **Offline Phrasebook (IndexedDB + PWA)** | Custom Service Worker (`v2`) and asynchronous IndexedDB storage allowing travelers to access all essential phrases and audio offline. |
 | **Content Lifecycle & Admin Portal** | Editorial governance workflow supporting `Draft` &rarr; `Under Review` &rarr; `Approved` &rarr; `Published` &rarr; `Archived` transitions with reviewer audit logging. |
+
 
 ---
 
@@ -42,7 +44,7 @@ Unlike generic translation tools or abstract flashcard apps, NammaKannada focuse
 - **Data Fetching:** SWR for reactive cache invalidation and revalidation
 - **Audio:** Web Speech API (`SpeechSynthesis`) with `kn-IN` voice synthesis and speech recognition
 - **Offline / PWA:** Service Worker (`sw.js` v2), Web App Manifest (`manifest.json`), IndexedDB phrase storage (`indexedDb.ts`)
-- **Testing:** Jest + React Testing Library (4 test suites, 7 tests)
+- **Testing:** Jest + React Testing Library (5 test suites, 12 tests) + Playwright E2E (3 tests)
 
 ### Backend
 - **Framework:** FastAPI (Python 3.11+)
@@ -50,7 +52,8 @@ Unlike generic translation tools or abstract flashcard apps, NammaKannada focuse
 - **Database Migrations:** Alembic
 - **Validation:** Pydantic v2 schemas for strict request/response data contracts
 - **Security:** HTTP Basic Authentication with Bcrypt password hashing and production startup credential validation
-- **Testing:** Pytest with in-memory SQLite isolation (23 automated tests)
+- **Translation Engine:** `deep-translator` (`MyMemoryTranslator` en-IN ↔ kn-IN with Google fallback & truststore Windows SSL)
+- **Testing:** Pytest with in-memory SQLite isolation (31 automated tests)
 
 ---
 
@@ -61,16 +64,16 @@ c:\hackathon\
 ├── backend/
 │   ├── app/
 │   │   ├── models/            # SQLAlchemy ORM models (Category, Scenario, Phrase, Quiz, Conversation, Review)
-│   │   ├── schemas/           # Pydantic v2 validation contracts
-│   │   ├── routers/           # FastAPI endpoints (categories, scenarios, phrases, offline, admin)
-│   │   ├── services/          # Business logic separation (category, phrase, conversation, quiz scoring)
+│   │   ├── schemas/           # Pydantic v2 validation contracts (category, scenario, voice)
+│   │   ├── routers/           # FastAPI endpoints (categories, scenarios, phrases, voice, offline, admin)
+│   │   ├── services/          # Business logic (category, phrase, conversation, translation, transcription)
 │   │   ├── security/          # HTTP Basic Auth + Bcrypt password validation
-│   │   ├── seed/              # Seed script with 4 categories, 12 scenarios, 63+ phrases
-│   │   ├── config.py          # Environment settings
+│   │   ├── seed/              # Master seed with 6 categories, 18 scenarios, 114 phrases
+│   │   ├── config.py          # Environment settings & translation provider settings
 │   │   ├── database.py        # SQLAlchemy engine and session factory
 │   │   └── main.py            # FastAPI entry point with CORS and error handlers
 │   ├── alembic/               # Database schema versioning
-│   ├── tests/                 # Automated Pytest suite (20 tests)
+│   ├── tests/                 # Automated Pytest suite (31 tests: 23 core + 8 voice tests)
 │   ├── requirements.txt       # Python dependencies
 │   ├── pytest.ini             # Pytest configuration
 │   └── .env                   # Backend environment configuration
@@ -81,17 +84,18 @@ c:\hackathon\
 │   │   ├── phrases/[id]/      # Deep phrase focus & breakdown
 │   │   ├── practice/[id]/     # Interactive conversation player
 │   │   ├── quiz/[id]/         # Quiz examination & scoring
+│   │   ├── translator/        # Bidirectional Voice Translator (English ↔ Kannada)
 │   │   ├── progress/          # Learning progress dashboard
 │   │   ├── saved/             # Bookmarked phrases collection
 │   │   ├── offline/           # Offline phrasebook & sync tool
 │   │   ├── admin/             # Editorial content governance portal
 │   │   ├── layout.tsx         # Root layout with Header, Footer, PWA meta
-│   │   └── page.tsx           # Home landing page with live search
+│   │   └── page.tsx           # Home landing page with live search & Translator banner
 │   ├── src/
-│   │   ├── components/        # Reusable UI & Layout components
+│   │   ├── components/        # Reusable UI & Layout components (VoiceTranslator, etc.)
 │   │   ├── hooks/             # Custom React hooks (useBookmarks)
 │   │   ├── lib/               # API client, storage, offline utilities
-│   │   └── types/             # TypeScript interfaces
+│   │   └── types/             # TypeScript interfaces (Phrase, Category, Voice, etc.)
 │   ├── public/
 │   │   ├── sw.js              # Service Worker for offline asset caching
 │   │   └── manifest.json      # PWA application manifest
@@ -193,7 +197,7 @@ cd backend
 .\.venv\Scripts\pytest -v
 ```
 
-**Test Coverage Summary (23/23 PASSED):**
+**Test Coverage Summary (31/31 PASSED):**
 - `test_health_check` & `test_root_endpoint`: Health probe and service metadata.
 - `test_list_categories`, `test_get_category_detail`, `test_get_category_not_found`: Category hierarchy across all 6 categories.
 - `test_list_category_scenarios`: Scenario lookup and learning objectives across 18 scenarios.
@@ -209,16 +213,38 @@ cd backend
 - `test_unauthorized_user_cannot_approve_or_publish`: Security verification that unauthorized users cannot bypass review.
 - `test_modifying_published_phrase_reverts_to_draft`: Re-review enforcement when modifying approved content.
 - `test_draft_phrase_excluded_from_search_and_manifest`: Guarantees unpublished content never leaks to learners.
+- `test_voice_status`: Status probe for bidirectional translation and supported language codes (`en`, `kn`).
+- `test_translate_english_to_kannada`: Validates English to Kannada translation producing valid Kannada Unicode script.
+- `test_translate_kannada_to_english`: Validates Kannada to English translation producing valid English text.
+- `test_translate_validation_*`: Input length, same-language rejection, and unsupported locale error handling.
+- `test_transcribe_*`: File size, empty payload, and audio format validation.
 
 ### 2. Frontend Unit & Component Tests (Jest + React Testing Library)
-Run frontend UI and storage tests:
+Run frontend UI and storage tests (5 test suites, 12/12 PASSED):
 
 ```bash
 cd frontend
-npm test -- --ci
+npm test
 ```
+- `VoiceTranslator.test.tsx`: Tests language swapping, speech recognition controls, text editing, and translation display.
+- `indexedDb.test.ts`: Offline IndexedDB phrase caching and sync logic.
+- `storage.test.ts`: Local bookmarks and progress management.
+- `EmptyState.test.tsx` & `ErrorMessage.test.tsx`: Accessible fallback UI components.
 
-**Test Coverage Summary (4/4 Test Suites, 7/7 PASSED):**
+### 3. End-to-End Browser Tests (Playwright)
+Run full browser automation tests (3/3 PASSED):
+
+```bash
+cd frontend
+npx playwright test
+```
+- Complete end-to-end learning journey across categories, scenarios, phrases, practice dialogues, and quizzes.
+- Protected administrative portal authentication enforcement.
+- Real-time bidirectional Voice Translator round-trip translation.
+
+
+**Test Coverage Summary (5/5 Test Suites, 12/12 PASSED):**
+- `VoiceTranslator.test.tsx`: Tests language swapping, speech recognition controls, text editing, status badges, and translation display.
 - `EmptyState.test.tsx`: Validates helpful empty and 404 in-development status states.
 - `ErrorMessage.test.tsx`: Verifies error alerts and user retry triggers.
 - `storage.test.ts`: Tests phrase bookmarking lifecycle and progress tracking without duplicate entries.

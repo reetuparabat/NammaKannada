@@ -69,4 +69,24 @@ test.describe('NammaKannada Learner Workflow E2E', () => {
     await expect(page.locator('input[type="password"]')).toBeVisible();
     await expect(page.locator('button:has-text("Authenticate")')).toBeVisible();
   });
+
+  test('Voice Translator performs bidirectional English <-> Kannada translation', async ({ page }) => {
+    await page.goto('/translator');
+    await expect(page.locator('h1').filter({ hasText: /Voice Translator/i })).toBeVisible();
+
+    // Type English text
+    const textarea = page.locator('textarea');
+    await textarea.fill('How are you?');
+
+    // Click Translate button
+    await page.locator('button:has-text("Translate")').click();
+
+    // Verify translated Kannada text appears
+    await expect(page.locator('text=ನೀವು ಹೇಗಿದ್ದೀರಿ?')).toBeVisible({ timeout: 10000 });
+
+    // Test Swap Direction button
+    await page.locator('button:has-text("Swap Direction")').click();
+    await expect(page.locator('text=ಕನ್ನಡ • Kannada (KN)').first()).toBeVisible();
+  });
 });
+

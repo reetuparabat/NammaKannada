@@ -103,25 +103,25 @@ export default function CategoryDetailPage() {
   const CategoryIcon = getCategoryIcon(category?.icon);
 
   return (
-    <div className="min-h-screen bg-slate-950 pb-20 text-slate-100">
+    <div className="min-h-screen bg-[#F8FAFC] pb-20 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* Category Banner Header */}
-      <section className="relative overflow-hidden border-b border-slate-800/80 bg-gradient-to-b from-slate-900 to-slate-950 py-12">
+      <section className="relative overflow-hidden border-b border-[#E2E8F0] bg-white py-12 dark:border-slate-800/80 dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950">
         <div className="pointer-events-none absolute right-1/4 top-0 -translate-y-1/2 transform">
           <div className="h-64 w-64 rounded-full bg-amber-500/10 blur-[100px]" />
         </div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb Navigation */}
-          <nav className="mb-6 flex items-center gap-2 text-xs font-medium text-slate-400">
+          <nav className="mb-6 flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
             <Link
               href="/"
-              className="inline-flex items-center gap-1 transition-colors hover:text-amber-400"
+              className="inline-flex items-center gap-1 transition-colors hover:text-amber-600 dark:hover:text-amber-400"
             >
               <ChevronLeft className="h-3.5 w-3.5" />
               <span>All Categories</span>
             </Link>
             <span>/</span>
-            <span className="text-slate-300">
+            <span className="font-semibold text-[#172554] dark:text-slate-300">
               {category?.name || 'Category Details'}
             </span>
           </nav>
@@ -134,22 +134,22 @@ export default function CategoryDetailPage() {
           ) : category ? (
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <div className="flex items-start gap-5">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/15 text-amber-400 shadow-md shadow-amber-500/10">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-amber-300 bg-[#FFF9ED] text-amber-600 shadow-sm dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-400 dark:shadow-amber-500/10">
                   <CategoryIcon className="h-8 w-8" />
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                    <h1 className="text-3xl font-extrabold tracking-tight text-[#172554] sm:text-4xl dark:text-white">
                       {category.name}
                     </h1>
-                    <span className="inline-flex items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-300">
+                    <span className="inline-flex items-center rounded-full border border-amber-300 bg-[#FFF9ED] px-3 py-1 text-xs font-semibold text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
                       {scenarios ? scenarios.length : category.scenario_count}{' '}
                       {(scenarios ? scenarios.length : category.scenario_count) === 1
                         ? 'Scenario'
                         : 'Scenarios'}
                     </span>
                   </div>
-                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
                     {category.description}
                   </p>
                 </div>
@@ -163,10 +163,10 @@ export default function CategoryDetailPage() {
       <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
+            <h2 className="text-xl font-bold tracking-tight text-[#172554] sm:text-2xl dark:text-white">
               Learning Scenarios
             </h2>
-            <p className="mt-1 text-xs text-slate-400 sm:text-sm">
+            <p className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
               Step through real-world dialogues, review key vocabulary, and test yourself.
             </p>
           </div>
@@ -212,7 +212,7 @@ export default function CategoryDetailPage() {
               <Link
                 key={scenario.id}
                 href={`/scenarios/${scenario.id}`}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/50 hover:bg-slate-900 hover:shadow-xl hover:shadow-amber-500/5"
+                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-400 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/70 dark:backdrop-blur-sm dark:hover:border-amber-500/50 dark:hover:bg-slate-900 dark:hover:shadow-xl"
               >
                 {/* Top border accent */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-amber-500/0 to-transparent transition-all duration-300 group-hover:via-amber-500/70" />
@@ -221,32 +221,32 @@ export default function CategoryDetailPage() {
                   {/* Badge & Metadata Header */}
                   <div className="flex items-center justify-between gap-2">
                     <DifficultyBadge difficulty={scenario.difficulty} />
-                    <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                      <Clock className="h-3.5 w-3.5 text-slate-500" />
+                    <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                      <Clock className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
                       <span>{scenario.estimated_minutes} mins</span>
                     </div>
                   </div>
 
                   {/* Scenario Title */}
-                  <h3 className="mt-4 text-xl font-bold tracking-tight text-white transition-colors duration-200 group-hover:text-amber-300">
+                  <h3 className="mt-4 text-xl font-bold tracking-tight text-[#172554] transition-colors duration-200 group-hover:text-amber-600 dark:text-white dark:group-hover:text-amber-300">
                     {scenario.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-400 group-hover:text-slate-300">
+                  <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600 group-hover:text-slate-800 dark:text-slate-400 dark:group-hover:text-slate-300">
                     {scenario.description}
                   </p>
                 </div>
 
                 {/* Footer with Phrase count and Start button */}
-                <div className="mt-6 border-t border-slate-800/80 pt-4">
+                <div className="mt-6 border-t border-[#E2E8F0] pt-4 dark:border-slate-800/80">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-medium text-slate-400">
-                      <BookOpen className="h-3.5 w-3.5 text-amber-500/80" />
+                    <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+                      <BookOpen className="h-3.5 w-3.5 text-amber-500" />
                       <span>{scenario.phrase_count} phrases</span>
                     </div>
 
-                    <div className="flex items-center gap-1 text-xs font-semibold text-amber-400 transition-colors group-hover:text-amber-300">
+                    <div className="flex items-center gap-1 text-xs font-semibold text-amber-600 transition-colors group-hover:text-amber-700 dark:text-amber-400 dark:group-hover:text-amber-300">
                       <span>Start Learning</span>
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                     </div>

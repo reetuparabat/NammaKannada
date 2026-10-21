@@ -23,7 +23,7 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div
-      className={`relative flex flex-col items-center justify-center rounded-2xl border border-slate-800/80 bg-slate-900/50 p-8 text-center backdrop-blur-sm sm:p-12 ${className}`}
+      className={`relative flex flex-col items-center justify-center rounded-2xl border border-[#E2E8F0] bg-white p-8 text-center shadow-sm backdrop-blur-sm sm:p-12 dark:border-slate-800/80 dark:bg-slate-900/50 ${className}`}
     >
       {/* Subtle ambient amber backdrop glow */}
       <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
@@ -31,21 +31,21 @@ export function EmptyState({
       </div>
 
       {/* Icon container */}
-      <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 text-amber-400 shadow-lg shadow-amber-500/10">
+      <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-300 bg-[#FFF9ED] text-amber-600 shadow-sm dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400 dark:shadow-lg dark:shadow-amber-500/10">
         {icon ? (
           <div className="flex items-center justify-center">{icon}</div>
         ) : (
-          <Sparkles className="h-8 w-8 text-amber-400" />
+          <Sparkles className="h-8 w-8 text-amber-600 dark:text-amber-400" />
         )}
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-semibold text-white tracking-tight sm:text-xl">
+      <h3 className="text-lg font-semibold text-[#172554] tracking-tight sm:text-xl dark:text-white">
         {title}
       </h3>
 
       {/* Description */}
-      <p className="mt-2 max-w-md text-sm text-slate-400 leading-relaxed">
+      <p className="mt-2 max-w-md text-sm text-slate-600 leading-relaxed dark:text-slate-400">
         {description}
       </p>
 

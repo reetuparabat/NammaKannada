@@ -91,7 +91,38 @@ export const api = {
     publish: (id: number) => `${BASE_URL}/api/v1/admin/content/phrases/${id}/publish`,
     archive: (id: number) => `${BASE_URL}/api/v1/admin/content/phrases/${id}/archive`,
   },
+  voice: {
+    translate: () => `${BASE_URL}/api/v1/voice/translate`,
+    transcribe: () => `${BASE_URL}/api/v1/voice/transcribe`,
+    status: () => `${BASE_URL}/api/v1/voice/status`,
+  },
 };
+
+export interface TranslationResponse {
+  translated_text: string;
+  source_language: string;
+  target_language: string;
+  provider?: string;
+  transliteration?: string | null;
+}
+
+/**
+ * Send text for bidirectional English <-> Kannada translation.
+ */
+export async function translateVoiceText(
+  text: string,
+  sourceLanguage: 'en' | 'kn',
+  targetLanguage: 'en' | 'kn'
+): Promise<TranslationResponse> {
+  return apiFetch<TranslationResponse>(api.voice.translate(), {
+    method: 'POST',
+    body: JSON.stringify({
+      text,
+      source_language: sourceLanguage,
+      target_language: targetLanguage,
+    }),
+  });
+}
 
 /**
  * Submit quiz answers and get server-side scored results.
@@ -105,3 +136,4 @@ export async function submitQuiz(
     body: JSON.stringify({ answers }),
   });
 }
+

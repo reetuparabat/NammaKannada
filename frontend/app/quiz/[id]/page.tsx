@@ -240,22 +240,22 @@ export default function QuizPage({ params }: { params: { id: string } }) {
     const isPassed = quizResult.passed;
 
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 pb-20">
+      <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pb-20 dark:bg-slate-950 dark:text-slate-100">
         {/* Top Header */}
-        <div className="border-b border-slate-800 bg-slate-900/90 py-4 backdrop-blur-md">
+        <div className="border-b border-[#E2E8F0] bg-white/90 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/90">
           <div className="mx-auto flex max-w-4xl items-center justify-between px-4 sm:px-6">
             <div className="flex items-center gap-3">
               <Link
                 href="/"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-800 text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#E2E8F0] bg-slate-50 text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Link>
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+                <span className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
                   Quiz Results
                 </span>
-                <h1 className="text-base font-bold text-white sm:text-lg">
+                <h1 className="text-base font-bold text-[#172554] sm:text-lg dark:text-white">
                   {scenario?.title || `Scenario #${scenarioId}`}
                 </h1>
               </div>
@@ -263,9 +263,9 @@ export default function QuizPage({ params }: { params: { id: string } }) {
 
             <button
               onClick={handleRetry}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-1.5 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-slate-50 px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
             >
-              <RotateCcw className="h-3.5 w-3.5 text-amber-400" />
+              <RotateCcw className="h-3.5 w-3.5 text-amber-500" />
               <span>Retry Quiz</span>
             </button>
           </div>
@@ -275,10 +275,10 @@ export default function QuizPage({ params }: { params: { id: string } }) {
         <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
           {/* Score Summary Card */}
           <div
-            className={`relative overflow-hidden rounded-3xl border p-6 text-center shadow-2xl sm:p-10 ${
+            className={`relative overflow-hidden rounded-3xl border p-6 text-center shadow-sm sm:p-10 dark:shadow-2xl ${
               isPassed
-                ? 'border-emerald-500/40 bg-gradient-to-b from-emerald-950/40 via-slate-900 to-slate-950'
-                : 'border-amber-500/40 bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-950'
+                ? 'border-emerald-300 bg-white dark:border-emerald-500/40 dark:bg-gradient-to-b dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-950'
+                : 'border-amber-300 bg-white dark:border-amber-500/40 dark:bg-gradient-to-b dark:from-amber-950/40 dark:via-slate-900 dark:to-slate-950'
             }`}
           >
             {/* Ambient Glow */}
@@ -289,10 +289,10 @@ export default function QuizPage({ params }: { params: { id: string } }) {
             />
 
             <div
-              className={`mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border text-3xl shadow-xl ${
+              className={`mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border text-3xl shadow-sm ${
                 isPassed
-                  ? 'border-emerald-500/40 bg-emerald-500/20 text-emerald-400'
-                  : 'border-amber-500/40 bg-amber-500/20 text-amber-400'
+                  ? 'border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-500/40 dark:bg-emerald-500/20 dark:text-emerald-400'
+                  : 'border-amber-200 bg-amber-50 text-amber-600 dark:border-amber-500/40 dark:bg-amber-500/20 dark:text-amber-400'
               }`}
             >
               {isPassed ? <Award className="h-10 w-10" /> : <Sparkles className="h-10 w-10" />}
@@ -301,22 +301,22 @@ export default function QuizPage({ params }: { params: { id: string } }) {
             <span
               className={`inline-block rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${
                 isPassed
-                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                  : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-500/20 dark:text-emerald-300 dark:border-emerald-500/30'
+                  : 'bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-500/20 dark:text-amber-300 dark:border-amber-500/30'
               }`}
             >
               {isPassed ? 'Passed Successfully!' : 'Keep Practicing!'}
             </span>
 
-            <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-extrabold text-[#172554] sm:text-4xl dark:text-white">
               {quizResult.score} / {quizResult.total}
             </h2>
 
-            <p className="mt-1 text-base font-medium text-slate-300">
-              Score: <span className="font-bold text-amber-400">{Math.round(quizResult.percentage)}%</span>
+            <p className="mt-1 text-base font-medium text-slate-700 dark:text-slate-300">
+              Score: <span className="font-bold text-amber-600 dark:text-amber-400">{Math.round(quizResult.percentage)}%</span>
             </p>
 
-            <p className="mx-auto mt-2 max-w-md text-sm text-slate-400">
+            <p className="mx-auto mt-2 max-w-md text-sm text-slate-600 dark:text-slate-400">
               {isPassed
                 ? 'Excellent work! You have shown strong comprehension of everyday Kannada phrases for this situation.'
                 : 'Good effort! Review the detailed answer explanations below or repeat the interactive conversation practice to improve.'}
@@ -335,15 +335,15 @@ export default function QuizPage({ params }: { params: { id: string } }) {
 
               <Link
                 href={`/practice/${scenarioId}`}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-6 py-3 font-semibold text-slate-200 transition hover:bg-slate-700 hover:text-white sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] bg-slate-50 px-6 py-3 font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white"
               >
-                <BookOpen className="h-4 w-4 text-amber-400" />
+                <BookOpen className="h-4 w-4 text-amber-500" />
                 <span>Review Practice Dialogue</span>
               </Link>
 
               <Link
                 href="/"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-900 px-5 py-3 font-medium text-slate-400 transition hover:bg-slate-800 hover:text-white sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] bg-slate-50 px-5 py-3 font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 sm:w-auto dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
               >
                 <span>Back to Home</span>
               </Link>
@@ -352,7 +352,7 @@ export default function QuizPage({ params }: { params: { id: string } }) {
 
           {/* Detailed Question Review Breakdown */}
           <div className="mt-10 space-y-6">
-            <h3 className="text-lg font-bold text-white tracking-tight">
+            <h3 className="text-lg font-bold text-[#172554] tracking-tight dark:text-white">
               Answer Review & Explanations ({quizResult.answers.length} Questions)
             </h3>
 
@@ -370,21 +370,21 @@ export default function QuizPage({ params }: { params: { id: string } }) {
                   key={ans.question_id}
                   className={`rounded-2xl border p-5 sm:p-6 transition-all ${
                     ans.is_correct
-                      ? 'border-emerald-500/30 bg-emerald-950/10'
-                      : 'border-red-500/30 bg-red-950/10'
+                      ? 'border-emerald-200 bg-white shadow-sm dark:border-emerald-500/30 dark:bg-emerald-950/10'
+                      : 'border-red-200 bg-white shadow-sm dark:border-red-500/30 dark:bg-red-950/10'
                   }`}
                 >
                   {/* Question Header */}
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2">
-                      <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-800 text-xs font-bold text-slate-300">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-xs font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                         Q{idx + 1}
                       </span>
                       <span
                         className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                           ans.is_correct
-                            ? 'bg-emerald-500/20 text-emerald-300'
-                            : 'bg-red-500/20 text-red-300'
+                            ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-500/20 dark:text-emerald-300'
+                            : 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-500/20 dark:text-red-300'
                         }`}
                       >
                         {ans.is_correct ? (
@@ -405,11 +405,11 @@ export default function QuizPage({ params }: { params: { id: string } }) {
                   {/* Question Text */}
                   <div className="mt-3">
                     {originalQuestion?.question_kannada && (
-                      <p className="text-lg font-semibold text-amber-300 sm:text-xl">
+                      <p className="text-lg font-semibold text-amber-600 sm:text-xl dark:text-amber-300">
                         {originalQuestion.question_kannada}
                       </p>
                     )}
-                    <p className="mt-1 text-base text-white">
+                    <p className="mt-1 text-base font-medium text-[#172554] dark:text-white">
                       {ans.question_text || originalQuestion?.question_text}
                     </p>
                   </div>
@@ -420,35 +420,35 @@ export default function QuizPage({ params }: { params: { id: string } }) {
                     <div
                       className={`rounded-xl border p-3 ${
                         ans.is_correct
-                          ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-200'
-                          : 'border-red-500/40 bg-red-500/10 text-red-200'
+                          ? 'border-emerald-200 bg-emerald-50/60 text-emerald-900 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200'
+                          : 'border-red-200 bg-red-50/60 text-red-900 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200'
                       }`}
                     >
-                      <span className="block text-xs font-bold uppercase tracking-wider text-slate-400">
+                      <span className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                         Your Answer:
                       </span>
-                      <p className="mt-1 font-semibold text-white">
+                      <p className="mt-1 font-semibold text-slate-900 dark:text-white">
                         {selectedOption?.option_kannada || selectedOption?.option_text || (
                           <span className="italic text-slate-400">No answer selected</span>
                         )}
                       </p>
                       {selectedOption?.option_kannada && selectedOption.option_text && (
-                        <p className="text-xs text-slate-300 mt-0.5">
+                        <p className="text-xs text-slate-600 mt-0.5 dark:text-slate-300">
                           {selectedOption.option_text}
                         </p>
                       )}
                     </div>
 
                     {/* Correct Answer */}
-                    <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3 text-emerald-200">
-                      <span className="block text-xs font-bold uppercase tracking-wider text-emerald-400">
+                    <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 text-emerald-900 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200">
+                      <span className="block text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
                         Correct Answer:
                       </span>
-                      <p className="mt-1 font-semibold text-emerald-200">
+                      <p className="mt-1 font-semibold text-emerald-900 dark:text-emerald-200">
                         {correctOption?.option_kannada || correctOption?.option_text || 'Correct Option'}
                       </p>
                       {correctOption?.option_kannada && correctOption.option_text && (
-                        <p className="text-xs text-slate-300 mt-0.5">
+                        <p className="text-xs text-slate-600 mt-0.5 dark:text-slate-300">
                           {correctOption.option_text}
                         </p>
                       )}
@@ -457,8 +457,8 @@ export default function QuizPage({ params }: { params: { id: string } }) {
 
                   {/* Explanation Note */}
                   {ans.explanation && (
-                    <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900/80 p-3 text-sm text-slate-300">
-                      <span className="block text-xs font-semibold uppercase text-amber-400">
+                    <div className="mt-4 rounded-xl border border-[#FDE68A] bg-[#FFF9ED] p-3 text-sm text-slate-800 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300">
+                      <span className="block text-xs font-semibold uppercase text-amber-800 dark:text-amber-400">
                         Explanation:
                       </span>
                       <p className="mt-0.5">{ans.explanation}</p>
@@ -481,36 +481,36 @@ export default function QuizPage({ params }: { params: { id: string } }) {
   const isAnswered = currentSelectedOptionId !== undefined;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-20">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pb-20 dark:bg-slate-950 dark:text-slate-100">
       {/* Top Header */}
-      <div className="sticky top-0 z-20 border-b border-slate-800 bg-slate-900/90 py-3.5 backdrop-blur-md">
+      <div className="sticky top-0 z-20 border-b border-[#E2E8F0] bg-white/90 py-3.5 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/90">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.back()}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-800 text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#E2E8F0] bg-slate-50 text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
               title="Go Back"
               aria-label="Go Back"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
             <div>
-              <span className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
                 Scenario Quiz
               </span>
-              <h1 className="text-sm font-bold text-white sm:text-base">
+              <h1 className="text-sm font-bold text-[#172554] sm:text-base dark:text-white">
                 {scenario?.title || `Scenario #${scenarioId}`}
               </h1>
             </div>
           </div>
 
-          <span className="text-xs font-mono font-semibold text-slate-400">
+          <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400">
             Question {currentIndex + 1} of {totalQuestions}
           </span>
         </div>
 
         {/* Progress Bar */}
-        <div className="mt-3 h-1.5 w-full bg-slate-800">
+        <div className="mt-3 h-1.5 w-full bg-slate-200 dark:bg-slate-800">
           <div
             className="h-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
@@ -531,9 +531,9 @@ export default function QuizPage({ params }: { params: { id: string } }) {
         )}
 
         {/* Question Card */}
-        <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl backdrop-blur-sm sm:p-8">
+        <div className="rounded-3xl border border-[#E2E8F0] bg-white p-6 shadow-sm sm:p-8 dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-xl">
           <div className="flex items-center justify-between">
-            <span className="inline-flex items-center rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-400 border border-amber-500/20">
+            <span className="inline-flex items-center rounded-full bg-[#FFF9ED] px-3 py-1 text-xs font-semibold text-amber-800 border border-[#FDE68A] dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20">
               Question {currentIndex + 1}
             </span>
 
@@ -541,7 +541,7 @@ export default function QuizPage({ params }: { params: { id: string } }) {
               <button
                 type="button"
                 onClick={() => speakKannada(currentQuestion.question_kannada)}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-slate-800 px-3 py-1.5 text-xs text-amber-400 transition hover:bg-slate-700"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-slate-50 px-3 py-1.5 text-xs text-amber-700 transition hover:bg-slate-100 dark:border-transparent dark:bg-slate-800 dark:text-amber-400"
                 title="Listen to Kannada question"
               >
                 <Volume2 className="h-3.5 w-3.5" />
@@ -553,11 +553,11 @@ export default function QuizPage({ params }: { params: { id: string } }) {
           {/* Prominent Question Text */}
           <div className="mt-4">
             {currentQuestion?.question_kannada && (
-              <p className="text-2xl font-bold text-amber-300 sm:text-3xl">
+              <p className="text-2xl font-bold text-amber-600 sm:text-3xl dark:text-amber-300">
                 {currentQuestion.question_kannada}
               </p>
             )}
-            <h2 className="mt-2 text-lg font-medium text-white sm:text-xl">
+            <h2 className="mt-2 text-lg font-bold text-[#172554] sm:text-xl dark:text-white">
               {currentQuestion?.question_text}
             </h2>
           </div>
@@ -574,8 +574,8 @@ export default function QuizPage({ params }: { params: { id: string } }) {
                   onClick={() => handleSelectOption(opt.id)}
                   className={`w-full rounded-2xl border p-4 text-left transition-all duration-150 active:scale-[0.99] ${
                     isSelected
-                      ? 'border-amber-500 bg-amber-500/15 shadow-lg shadow-amber-500/10 ring-2 ring-amber-500/40'
-                      : 'border-slate-800 bg-slate-850 hover:border-slate-700 hover:bg-slate-800 text-slate-200'
+                      ? 'border-amber-500 bg-[#FFF9ED] shadow-sm ring-2 ring-amber-400/50 dark:border-amber-500 dark:bg-amber-500/15 dark:ring-amber-500/40'
+                      : 'border-[#E2E8F0] bg-white hover:border-amber-300 hover:bg-amber-50/20 text-slate-800 dark:border-slate-800 dark:bg-slate-850 dark:hover:border-slate-700 dark:hover:bg-slate-800 dark:text-slate-200'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-3">
@@ -583,7 +583,7 @@ export default function QuizPage({ params }: { params: { id: string } }) {
                       {opt.option_kannada && (
                         <p
                           className={`text-lg font-medium ${
-                            isSelected ? 'text-amber-300' : 'text-slate-100'
+                            isSelected ? 'text-amber-800 dark:text-amber-300' : 'text-[#172554] dark:text-slate-100'
                           }`}
                         >
                           {opt.option_kannada}
@@ -591,7 +591,7 @@ export default function QuizPage({ params }: { params: { id: string } }) {
                       )}
                       <p
                         className={`text-sm ${
-                          isSelected ? 'text-amber-100 font-medium' : 'text-slate-300'
+                          isSelected ? 'text-amber-900 font-semibold dark:text-amber-100' : 'text-slate-600 dark:text-slate-300'
                         }`}
                       >
                         {opt.option_text}
@@ -602,8 +602,8 @@ export default function QuizPage({ params }: { params: { id: string } }) {
                     <div
                       className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-all ${
                         isSelected
-                          ? 'border-amber-400 bg-amber-500 text-slate-950 font-bold'
-                          : 'border-slate-600 bg-slate-800'
+                          ? 'border-amber-500 bg-amber-500 text-slate-950 font-bold'
+                          : 'border-slate-300 bg-slate-50 dark:border-slate-600 dark:bg-slate-800'
                       }`}
                     >
                       {isSelected && (
@@ -623,7 +623,7 @@ export default function QuizPage({ params }: { params: { id: string } }) {
             type="button"
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 disabled:pointer-events-none disabled:opacity-40"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Previous</span>

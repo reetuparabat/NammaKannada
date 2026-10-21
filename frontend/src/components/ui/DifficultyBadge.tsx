@@ -17,22 +17,22 @@ const configMap: Record<
     label: 'Beginner',
     kannadaLabel: 'ಸುಲಭ',
     badgeClasses:
-      'bg-emerald-500/15 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20',
-    dotClasses: 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.7)]',
+      'bg-emerald-50 text-emerald-700 border-emerald-300 hover:bg-emerald-100 dark:bg-emerald-500/15 dark:text-emerald-400 dark:border-emerald-500/30 dark:hover:bg-emerald-500/20',
+    dotClasses: 'bg-emerald-500 dark:bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.7)]',
   },
   intermediate: {
     label: 'Intermediate',
     kannadaLabel: 'ಮಧ್ಯಮ',
     badgeClasses:
-      'bg-amber-500/15 text-amber-400 border-amber-500/30 hover:bg-amber-500/20',
-    dotClasses: 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.7)]',
+      'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100 dark:bg-amber-500/15 dark:text-amber-400 dark:border-amber-500/30 dark:hover:bg-amber-500/20',
+    dotClasses: 'bg-amber-500 dark:bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.7)]',
   },
   advanced: {
     label: 'Advanced',
     kannadaLabel: 'ಕಠಿಣ',
     badgeClasses:
-      'bg-rose-500/15 text-rose-400 border-rose-500/30 hover:bg-rose-500/20',
-    dotClasses: 'bg-rose-400 shadow-[0_0_6px_rgba(251,113,133,0.7)]',
+      'bg-rose-50 text-rose-700 border-rose-300 hover:bg-rose-100 dark:bg-rose-500/15 dark:text-rose-400 dark:border-rose-500/30 dark:hover:bg-rose-500/20',
+    dotClasses: 'bg-rose-500 dark:bg-rose-400 shadow-[0_0_6px_rgba(251,113,133,0.7)]',
   },
 };
 
@@ -57,8 +57,8 @@ export function DifficultyBadge({
     configMap[normalized] || {
       label: difficulty || 'Unknown',
       kannadaLabel: '',
-      badgeClasses: 'bg-slate-700/30 text-slate-300 border-slate-600/40',
-      dotClasses: 'bg-slate-400',
+      badgeClasses: 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-slate-700/30 dark:text-slate-300 dark:border-slate-600/40',
+      dotClasses: 'bg-slate-500 dark:bg-slate-400',
     };
 
   return (

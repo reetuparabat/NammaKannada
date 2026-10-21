@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     debug: bool = False
     environment: str = "development"
     app_version: str = "1.0.0"
+    translation_provider: str = "mymemory"
+    translation_timeout_seconds: int = 10
+    max_audio_upload_mb: int = 15
+
 
     class Config:
         env_file = ".env"

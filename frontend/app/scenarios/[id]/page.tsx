@@ -138,17 +138,17 @@ export default function ScenarioDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 pb-24 text-slate-100">
+    <div className="min-h-screen bg-[#F8FAFC] pb-24 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* Header Banner */}
-      <section className="relative overflow-hidden border-b border-slate-800/80 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 py-12">
+      <section className="relative overflow-hidden border-b border-[#E2E8F0] bg-white py-12 dark:border-slate-800/80 dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
         <div className="pointer-events-none absolute right-1/3 top-0 -translate-y-1/2 transform">
           <div className="h-72 w-72 rounded-full bg-amber-500/10 blur-[110px]" />
         </div>
 
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           {/* Breadcrumbs */}
-          <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs font-medium text-slate-400">
-            <Link href="/" className="transition hover:text-amber-400">
+          <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+            <Link href="/" className="transition hover:text-amber-600 dark:hover:text-amber-400">
               Home
             </Link>
             <span>/</span>
@@ -156,14 +156,14 @@ export default function ScenarioDetailPage() {
               <>
                 <Link
                   href={`/categories/${category.id}`}
-                  className="transition hover:text-amber-400"
+                  className="transition hover:text-amber-600 dark:hover:text-amber-400"
                 >
                   {category.name}
                 </Link>
                 <span>/</span>
               </>
             )}
-            <span className="text-slate-300">
+            <span className="font-semibold text-[#172554] dark:text-slate-300">
               {scenario?.title || 'Scenario Details'}
             </span>
           </nav>
@@ -177,21 +177,21 @@ export default function ScenarioDetailPage() {
             <div>
               <div className="flex flex-wrap items-center gap-3">
                 <DifficultyBadge difficulty={scenario.difficulty} size="md" />
-                <div className="flex items-center gap-1.5 rounded-full border border-slate-800 bg-slate-800/60 px-3 py-1 text-xs text-slate-300">
-                  <Clock className="h-3.5 w-3.5 text-amber-400" />
+                <div className="flex items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-slate-50 px-3 py-1 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-300">
+                  <Clock className="h-3.5 w-3.5 text-amber-500" />
                   <span>{scenario.estimated_minutes} min lesson</span>
                 </div>
-                <div className="flex items-center gap-1.5 rounded-full border border-slate-800 bg-slate-800/60 px-3 py-1 text-xs text-slate-300">
-                  <BookOpen className="h-3.5 w-3.5 text-amber-400" />
+                <div className="flex items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-slate-50 px-3 py-1 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-300">
+                  <BookOpen className="h-3.5 w-3.5 text-amber-500" />
                   <span>{scenario.phrase_count} key phrases</span>
                 </div>
               </div>
 
-              <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+              <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-[#172554] sm:text-4xl lg:text-5xl dark:text-white">
                 {scenario.title}
               </h1>
 
-              <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-300 sm:text-lg">
+              <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
                 {scenario.description}
               </p>
 
@@ -207,7 +207,7 @@ export default function ScenarioDetailPage() {
 
                 <Link
                   href={`/quiz/${scenario.id}`}
-                  className="inline-flex items-center gap-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 px-6 py-3 text-sm font-bold text-amber-300 backdrop-blur-sm transition-all duration-200 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white active:scale-95"
+                  className="inline-flex items-center gap-2.5 rounded-xl border border-amber-300 bg-[#FFF9ED] px-6 py-3 text-sm font-bold text-amber-800 transition-all duration-200 hover:bg-amber-100 hover:border-amber-400 hover:text-amber-900 active:scale-95 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300 dark:hover:bg-amber-500/20 dark:hover:text-white"
                 >
                   <Award className="h-4 w-4" />
                   <span>Take Quiz</span>
@@ -222,15 +222,15 @@ export default function ScenarioDetailPage() {
       <main className="mx-auto max-w-5xl px-4 pt-10 sm:px-6 lg:px-8">
         {/* Learning Objectives Card */}
         {objectives.length > 0 && (
-          <div className="mb-10 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-950/20 via-slate-900/60 to-slate-900/40 p-6 backdrop-blur-sm shadow-md">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400">
-              <Sparkles className="h-4 w-4" />
+          <div className="mb-10 rounded-2xl border border-[#FDE68A] bg-[#FFF9ED] p-6 shadow-sm dark:border-amber-500/20 dark:bg-gradient-to-br dark:from-amber-950/20 dark:via-slate-900/60 dark:to-slate-900/40">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
+              <Sparkles className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               <span>What You Will Learn</span>
             </div>
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {objectives.map((obj, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-sm text-slate-200">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+                <li key={idx} className="flex items-start gap-2.5 text-sm text-slate-800 dark:text-slate-200">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
                   <span>{obj}</span>
                 </li>
               ))}
@@ -241,17 +241,17 @@ export default function ScenarioDetailPage() {
         {/* Phrases Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
               <span>Key Vocabulary</span>
               <span>•</span>
-              <span className="font-normal text-amber-300">ಪ್ರಮುಖ ಪದಗಳು</span>
+              <span className="font-normal text-amber-700 dark:text-amber-300">ಪ್ರಮುಖ ಪದಗಳು</span>
             </div>
-            <h2 className="mt-1 text-2xl font-bold tracking-tight text-white">
+            <h2 className="mt-1 text-2xl font-bold tracking-tight text-[#172554] dark:text-white">
               Phrases in This Scenario
             </h2>
           </div>
           {phrases && phrases.length > 0 && (
-            <span className="text-xs font-medium text-slate-400">
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
               {phrases.length} phrases to learn
             </span>
           )}
@@ -299,7 +299,7 @@ export default function ScenarioDetailPage() {
               return (
                 <div
                   key={phrase.id}
-                  className="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70 p-5 backdrop-blur-sm transition-all duration-200 hover:border-amber-500/40 hover:bg-slate-900/90 hover:shadow-lg hover:shadow-amber-500/5 sm:p-6"
+                  className="group relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-sm transition-all duration-200 hover:border-amber-400 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/70 dark:backdrop-blur-sm dark:hover:border-amber-500/40 dark:hover:bg-slate-900/90 dark:hover:shadow-lg sm:p-6"
                 >
                   {/* Subtle left accent highlight */}
                   <div className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-amber-500/0 transition-colors duration-200 group-hover:bg-amber-500" />
@@ -308,17 +308,17 @@ export default function ScenarioDetailPage() {
                     <div className="flex-1">
                       {/* Phrase Index Badge & Context */}
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-800 text-[11px] font-bold text-slate-400">
+                        <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-100 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-400">
                           {index + 1}
                         </span>
                         {phrase.context && (
-                          <span className="inline-flex items-center gap-1 rounded-md border border-slate-700/60 bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300">
-                            <Info className="h-3 w-3 text-amber-400" />
+                          <span className="inline-flex items-center gap-1 rounded-md border border-[#E2E8F0] bg-slate-50 px-2 py-0.5 text-xs text-slate-700 dark:border-slate-700/60 dark:bg-slate-800/80 dark:text-slate-300">
+                            <Info className="h-3 w-3 text-amber-500" />
                             <span>{phrase.context}</span>
                           </span>
                         )}
                         {phrase.formality_note && (
-                          <span className="inline-flex items-center rounded-md border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[11px] text-amber-300">
+                          <span className="inline-flex items-center rounded-md border border-amber-300 bg-[#FFF9ED] px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-300">
                             {phrase.formality_note}
                           </span>
                         )}
@@ -326,7 +326,7 @@ export default function ScenarioDetailPage() {
 
                       {/* Kannada Script (Large & Prominent) */}
                       <div className="mt-3 flex items-center gap-3">
-                        <p className="kannada-text font-bold text-white tracking-wide text-2xl sm:text-3xl text-amber-400/95">
+                        <p className="kannada-text font-bold tracking-wide text-2xl sm:text-3xl text-[#172554] dark:text-amber-400/95">
                           {phrase.kannada_text}
                         </p>
 
@@ -336,8 +336,8 @@ export default function ScenarioDetailPage() {
                           onClick={() => handleSpeak(phrase.kannada_text, phrase.id)}
                           aria-label="Listen to pronunciation"
                           title="Listen to pronunciation"
-                          className={`rounded-lg p-2 text-slate-400 transition hover:bg-amber-500/10 hover:text-amber-400 ${
-                            playingId === phrase.id ? 'animate-pulse text-amber-400' : ''
+                          className={`rounded-lg p-2 text-slate-400 transition hover:bg-amber-50 hover:text-amber-600 dark:hover:bg-amber-500/10 dark:hover:text-amber-400 ${
+                            playingId === phrase.id ? 'animate-pulse text-amber-500' : ''
                           }`}
                         >
                           <Volume2 className="h-5 w-5" />
@@ -345,19 +345,19 @@ export default function ScenarioDetailPage() {
                       </div>
 
                       {/* English Transliteration (Italic) */}
-                      <p className="mt-1 text-sm font-medium italic text-amber-300/80 sm:text-base">
+                      <p className="mt-1 text-sm font-medium italic text-amber-700 sm:text-base dark:text-amber-300/80">
                         &quot;{phrase.transliteration}&quot;
                       </p>
 
                       {/* English Meaning */}
-                      <p className="mt-2 text-base font-semibold text-slate-200 sm:text-lg">
+                      <p className="mt-2 text-base font-semibold text-slate-800 sm:text-lg dark:text-slate-200">
                         {phrase.english_meaning}
                       </p>
 
                       {/* Usage Example if available */}
                       {phrase.example && (
-                        <div className="mt-3 rounded-lg border border-slate-800 bg-slate-950/60 p-3 text-xs text-slate-400">
-                          <span className="font-semibold text-slate-300">Example: </span>
+                        <div className="mt-3 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-3 text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-400">
+                          <span className="font-semibold text-slate-800 dark:text-slate-300">Example: </span>
                           <span>{phrase.example}</span>
                         </div>
                       )}
@@ -372,13 +372,13 @@ export default function ScenarioDetailPage() {
                         title={bookmarked ? 'Saved to Bookmarks' : 'Save phrase'}
                         className={`group/btn flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-150 active:scale-90 ${
                           bookmarked
-                            ? 'border-amber-500/50 bg-amber-500/20 text-amber-400 shadow-md shadow-amber-500/20'
-                            : 'border-slate-800 bg-slate-800/40 text-slate-400 hover:border-amber-500/40 hover:bg-amber-500/10 hover:text-amber-400'
+                            ? 'border-amber-400 bg-[#FFF9ED] text-amber-600 shadow-sm dark:border-amber-500/50 dark:bg-amber-500/20 dark:text-amber-400'
+                            : 'border-[#E2E8F0] bg-slate-50 text-slate-400 hover:border-amber-400 hover:bg-amber-50 hover:text-amber-600 dark:border-slate-800 dark:bg-slate-800/40 dark:text-slate-400'
                         }`}
                       >
                         <Bookmark
                           className={`h-5 w-5 transition-transform group-hover/btn:scale-110 ${
-                            bookmarked ? 'fill-amber-400 text-amber-400' : ''
+                            bookmarked ? 'fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400' : ''
                           }`}
                         />
                       </button>
@@ -392,13 +392,13 @@ export default function ScenarioDetailPage() {
 
         {/* Bottom Call to Action for Practice & Quiz */}
         {scenario && (
-          <div className="mt-12 rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900/90 to-amber-950/20 p-8 text-center sm:text-left">
+          <div className="mt-12 rounded-2xl border border-[#E2E8F0] bg-white p-8 shadow-sm text-center sm:text-left dark:border-slate-800 dark:bg-gradient-to-r dark:from-slate-900 dark:via-slate-900/90 dark:to-amber-950/20">
             <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
               <div>
-                <h3 className="text-xl font-bold text-white sm:text-2xl">
+                <h3 className="text-xl font-bold text-[#172554] sm:text-2xl dark:text-white">
                   Ready to test your practical Kannada?
                 </h3>
-                <p className="mt-1.5 text-sm text-slate-400">
+                <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-400">
                   Practice simulated dialogues with instant response choices or take a short knowledge quiz.
                 </p>
               </div>
@@ -415,9 +415,9 @@ export default function ScenarioDetailPage() {
 
                 <Link
                   href={`/quiz/${scenario.id}`}
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-amber-500/50 hover:bg-slate-800 hover:text-white active:scale-95"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-slate-50 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-amber-400 hover:bg-amber-50 active:scale-95 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-200"
                 >
-                  <Award className="h-4 w-4 text-amber-400" />
+                  <Award className="h-4 w-4 text-amber-500" />
                   <span>Take Quiz</span>
                 </Link>
               </div>

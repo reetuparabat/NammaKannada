@@ -312,33 +312,33 @@ export default function PracticePage({ params }: { params: { id: string } }) {
     if (s === 'user' || s === 'you') {
       return {
         label: 'You (ನೀವು)',
-        bg: 'bg-amber-500/20 border-amber-500/40 text-amber-300',
+        bg: 'bg-[#FFF9ED] border-[#FDE68A] text-amber-900 dark:bg-amber-500/20 dark:border-amber-500/40 dark:text-amber-300',
         avatarBg: 'bg-amber-500 text-slate-950',
       };
     }
     if (s === 'narrator') {
       return {
         label: 'Scenario Context',
-        bg: 'bg-purple-500/20 border-purple-500/40 text-purple-300',
+        bg: 'bg-purple-50 border-purple-200 text-purple-900 dark:bg-purple-500/20 dark:border-purple-500/40 dark:text-purple-300',
         avatarBg: 'bg-purple-600 text-white',
       };
     }
     return {
       label: speaker.charAt(0).toUpperCase() + speaker.slice(1),
-      bg: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300',
+      bg: 'bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-500/20 dark:border-emerald-500/40 dark:text-emerald-300',
       avatarBg: 'bg-emerald-600 text-white',
     };
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-24">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pb-24 dark:bg-slate-950 dark:text-slate-100">
       {/* Top Header Bar */}
-      <div className="sticky top-0 z-30 border-b border-slate-800 bg-slate-900/90 backdrop-blur-md">
+      <div className="sticky top-0 z-30 border-b border-[#E2E8F0] bg-white/90 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/90">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.back()}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-800 text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#E2E8F0] bg-slate-50 text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
               title="Go Back"
               aria-label="Go Back"
             >
@@ -346,11 +346,11 @@ export default function PracticePage({ params }: { params: { id: string } }) {
             </button>
             <div>
               <div className="flex items-center gap-2">
-                <span className="rounded bg-amber-500/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-amber-400">
+                <span className="rounded bg-[#FFF9ED] px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-amber-800 border border-[#FDE68A] dark:bg-amber-500/10 dark:text-amber-400 dark:border-transparent">
                   Interactive Practice
                 </span>
               </div>
-              <h1 className="text-base font-bold text-white sm:text-lg">
+              <h1 className="text-base font-bold text-[#172554] sm:text-lg dark:text-white">
                 {conversation.title || scenario?.title || 'Guided Practice'}
               </h1>
             </div>
@@ -359,10 +359,10 @@ export default function PracticePage({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-2">
             <button
               onClick={handleRestart}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-slate-700 hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300"
               title="Restart Conversation"
             >
-              <RotateCcw className="h-3.5 w-3.5 text-amber-400" />
+              <RotateCcw className="h-3.5 w-3.5 text-amber-500" />
               <span className="hidden sm:inline">Restart</span>
             </button>
           </div>
@@ -372,7 +372,7 @@ export default function PracticePage({ params }: { params: { id: string } }) {
       {/* Main Conversation Container */}
       <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
         {conversation.description && (
-          <div className="mb-6 rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-sm text-slate-300">
+          <div className="mb-6 rounded-xl border border-[#E2E8F0] bg-white p-4 text-sm text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300">
             <p>{conversation.description}</p>
           </div>
         )}
@@ -400,10 +400,10 @@ export default function PracticePage({ params }: { params: { id: string } }) {
                   <div
                     className={`max-w-[88%] rounded-2xl p-4 sm:max-w-[78%] ${
                       isNarrator
-                        ? 'border border-purple-500/30 bg-purple-950/20 text-purple-200'
+                        ? 'border border-purple-200 bg-purple-50 text-purple-900 dark:border-purple-500/30 dark:bg-purple-950/20 dark:text-purple-200'
                         : isUser
-                        ? 'border border-amber-500/30 bg-amber-950/20 text-amber-100'
-                        : 'border border-slate-800 bg-slate-900 text-slate-200 shadow-md'
+                        ? 'border border-[#FDE68A] bg-[#FFF9ED] text-amber-950 dark:border-amber-500/30 dark:bg-amber-950/20 dark:text-amber-100'
+                        : 'border border-[#E2E8F0] bg-white text-slate-800 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:shadow-md'
                     }`}
                   >
                     {/* Speaker Header */}
@@ -417,7 +417,7 @@ export default function PracticePage({ params }: { params: { id: string } }) {
                         <button
                           type="button"
                           onClick={() => speakKannada(item.step.message_kannada)}
-                          className="rounded p-1 text-slate-400 hover:text-amber-400"
+                          className="rounded p-1 text-slate-400 hover:text-amber-600 dark:hover:text-amber-400"
                           title="Listen to pronunciation"
                           aria-label="Listen to pronunciation"
                         >
@@ -428,20 +428,20 @@ export default function PracticePage({ params }: { params: { id: string } }) {
 
                     {/* Kannada text if present */}
                     {item.step.message_kannada && (
-                      <p className="text-lg font-medium text-amber-300 sm:text-xl">
+                      <p className="text-lg font-medium text-[#172554] sm:text-xl dark:text-amber-300">
                         {item.step.message_kannada}
                       </p>
                     )}
 
                     {/* Transliteration */}
                     {item.step.message_transliteration && (
-                      <p className="mt-1 text-xs font-mono text-slate-400 italic">
+                      <p className="mt-1 text-xs font-mono text-slate-500 italic dark:text-slate-400">
                         {item.step.message_transliteration}
                       </p>
                     )}
 
                     {/* English Message */}
-                    <p className="mt-1.5 text-sm text-slate-300">
+                    <p className="mt-1.5 text-sm text-slate-700 dark:text-slate-300">
                       {item.step.message}
                     </p>
                   </div>
@@ -450,21 +450,21 @@ export default function PracticePage({ params }: { params: { id: string } }) {
                 {/* Selected option bubble (if user made a choice) */}
                 {item.selectedOption && (
                   <div className="flex justify-end pr-2">
-                    <div className="max-w-[80%] rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 text-right">
-                      <span className="block text-xs font-semibold uppercase text-amber-400">
+                    <div className="max-w-[80%] rounded-xl border border-[#FDE68A] bg-[#FFF9ED] p-3 text-right dark:border-amber-500/40 dark:bg-amber-500/10">
+                      <span className="block text-xs font-semibold uppercase text-amber-800 dark:text-amber-400">
                         Your response:
                       </span>
                       {item.selectedOption.option_kannada && (
-                        <p className="text-base font-medium text-amber-200">
+                        <p className="text-base font-medium text-amber-900 dark:text-amber-200">
                           {item.selectedOption.option_kannada}
                         </p>
                       )}
                       {item.selectedOption.option_transliteration && (
-                        <p className="text-xs font-mono text-amber-300/80 italic">
+                        <p className="text-xs font-mono text-amber-800/80 italic dark:text-amber-300/80">
                           {item.selectedOption.option_transliteration}
                         </p>
                       )}
-                      <p className="text-sm text-white">
+                      <p className="text-sm text-slate-900 dark:text-white">
                         {item.selectedOption.option_text}
                       </p>
                     </div>
@@ -494,12 +494,12 @@ export default function PracticePage({ params }: { params: { id: string } }) {
                     }`}
                   >
                     <div
-                      className={`max-w-[90%] rounded-2xl p-5 shadow-lg ring-1 transition-all sm:max-w-[80%] ${
+                      className={`max-w-[90%] rounded-2xl p-5 shadow-sm ring-1 transition-all sm:max-w-[80%] ${
                         isNarrator
-                          ? 'border border-purple-500/40 bg-purple-950/30 ring-purple-500/20 text-purple-200'
+                          ? 'border border-purple-200 bg-purple-50 ring-purple-200 text-purple-900 dark:border-purple-500/40 dark:bg-purple-950/30 dark:ring-purple-500/20 dark:text-purple-200'
                           : isUser
-                          ? 'border border-amber-500/40 bg-amber-950/30 ring-amber-500/20 text-amber-100'
-                          : 'border border-slate-700 bg-slate-900 ring-amber-500/10 text-slate-200'
+                          ? 'border border-[#FDE68A] bg-[#FFF9ED] ring-amber-300 text-amber-950 dark:border-amber-500/40 dark:bg-amber-950/30 dark:ring-amber-500/20 dark:text-amber-100'
+                          : 'border border-[#E2E8F0] bg-white ring-slate-200 text-slate-800 shadow-md dark:border-slate-700 dark:bg-slate-900 dark:ring-amber-500/10 dark:text-slate-200'
                       }`}
                     >
                       <div className="mb-2 flex items-center justify-between gap-2">
@@ -512,7 +512,7 @@ export default function PracticePage({ params }: { params: { id: string } }) {
                           <button
                             type="button"
                             onClick={() => speakKannada(currentStep.message_kannada)}
-                            className="inline-flex items-center gap-1 rounded-md bg-slate-800 px-2 py-1 text-xs text-amber-400 hover:bg-slate-700"
+                            className="inline-flex items-center gap-1 rounded-md border border-[#E2E8F0] bg-slate-50 px-2 py-1 text-xs text-amber-700 hover:bg-slate-100 dark:border-transparent dark:bg-slate-800 dark:text-amber-400"
                             title="Listen"
                           >
                             <Volume2 className="h-3.5 w-3.5" />
@@ -522,18 +522,18 @@ export default function PracticePage({ params }: { params: { id: string } }) {
                       </div>
 
                       {currentStep.message_kannada && (
-                        <p className="text-xl font-medium text-amber-300 sm:text-2xl">
+                        <p className="text-xl font-bold text-[#172554] sm:text-2xl dark:text-amber-300">
                           {currentStep.message_kannada}
                         </p>
                       )}
 
                       {currentStep.message_transliteration && (
-                        <p className="mt-1 text-sm font-mono text-slate-400 italic">
+                        <p className="mt-1 text-sm font-mono text-slate-500 italic dark:text-slate-400">
                           {currentStep.message_transliteration}
                         </p>
                       )}
 
-                      <p className="mt-2 text-sm sm:text-base text-slate-300">
+                      <p className="mt-2 text-sm sm:text-base text-slate-700 dark:text-slate-300">
                         {currentStep.message}
                       </p>
                     </div>
@@ -543,8 +543,8 @@ export default function PracticePage({ params }: { params: { id: string } }) {
 
               {/* Interactive Options Area */}
               {currentStep.options && currentStep.options.length > 0 ? (
-                <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/90 p-5 shadow-xl">
-                  <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-amber-400">
+                <div className="mt-6 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-xl">
+                  <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#172554] dark:text-amber-400">
                     Choose your response:
                   </h2>
                   <div className="space-y-3">
@@ -553,25 +553,25 @@ export default function PracticePage({ params }: { params: { id: string } }) {
                         key={option.id}
                         type="button"
                         onClick={() => handleOptionSelect(option)}
-                        className="group w-full rounded-xl border border-slate-700 bg-slate-850 p-4 text-left transition-all duration-150 hover:border-amber-500 hover:bg-slate-800 hover:shadow-lg hover:shadow-amber-500/10 active:scale-[0.99]"
+                        className="group w-full rounded-xl border border-[#E2E8F0] bg-white p-4 text-left transition-all duration-150 hover:border-amber-400 hover:bg-[#FFF9ED] hover:shadow-sm active:scale-[0.99] dark:border-slate-700 dark:bg-slate-850 dark:hover:border-amber-500 dark:hover:bg-slate-800 dark:hover:shadow-lg dark:hover:shadow-amber-500/10"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1">
                             {option.option_kannada && (
-                              <p className="text-base font-semibold text-amber-300 group-hover:text-amber-200">
+                              <p className="text-base font-semibold text-[#172554] group-hover:text-amber-700 dark:text-amber-300 dark:group-hover:text-amber-200">
                                 {option.option_kannada}
                               </p>
                             )}
                             {option.option_transliteration && (
-                              <p className="mt-0.5 text-xs font-mono text-slate-400 italic">
+                              <p className="mt-0.5 text-xs font-mono text-slate-500 italic dark:text-slate-400">
                                 {option.option_transliteration}
                               </p>
                             )}
-                            <p className="mt-1 text-sm text-slate-300">
+                            <p className="mt-1 text-sm text-slate-600 group-hover:text-slate-900 dark:text-slate-300">
                               {option.option_text}
                             </p>
                           </div>
-                          <ChevronRight className="mt-1 h-5 w-5 shrink-0 text-slate-500 transition-transform group-hover:translate-x-1 group-hover:text-amber-400" />
+                          <ChevronRight className="mt-1 h-5 w-5 shrink-0 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-amber-600 dark:text-slate-500 dark:group-hover:text-amber-400" />
                         </div>
                       </button>
                     ))}
@@ -597,20 +597,20 @@ export default function PracticePage({ params }: { params: { id: string } }) {
 
           {/* 3. COMPLETION STATE */}
           {(isCompleted || currentStep?.step_type === 'end') && (
-            <div className="mt-8 overflow-hidden rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-950 p-6 text-center shadow-2xl sm:p-8">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-500/40 bg-emerald-500/20 text-emerald-400 shadow-lg shadow-emerald-500/20">
+            <div className="mt-8 overflow-hidden rounded-2xl border border-emerald-300 bg-emerald-50/50 p-6 text-center shadow-sm sm:p-8 dark:border-emerald-500/30 dark:bg-gradient-to-br dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-950 dark:shadow-2xl">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-200 bg-emerald-100 text-emerald-600 shadow-sm dark:border-emerald-500/40 dark:bg-emerald-500/20 dark:text-emerald-400">
                 <CheckCircle2 className="h-9 w-9" />
               </div>
 
-              <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-300">
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300">
                 Conversation Completed!
               </span>
 
-              <h2 className="mt-3 text-2xl font-bold text-white sm:text-3xl">
+              <h2 className="mt-3 text-2xl font-bold text-[#172554] sm:text-3xl dark:text-white">
                 ಅಭಿನಂದನೆಗಳು! (Congratulations!)
               </h2>
 
-              <p className="mx-auto mt-2 max-w-md text-sm text-slate-300 sm:text-base">
+              <p className="mx-auto mt-2 max-w-md text-sm text-slate-600 sm:text-base dark:text-slate-300">
                 {currentStep?.step_type === 'end'
                   ? currentStep.message
                   : 'You successfully completed this guided dialogue. Your progress has been saved.'}
@@ -629,15 +629,15 @@ export default function PracticePage({ params }: { params: { id: string } }) {
                 <button
                   type="button"
                   onClick={handleRestart}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-3.5 text-sm font-semibold text-slate-200 transition hover:bg-slate-700 hover:text-white sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-5 py-3.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white sm:w-auto"
                 >
-                  <RotateCcw className="h-4 w-4 text-amber-400" />
+                  <RotateCcw className="h-4 w-4 text-amber-500" />
                   <span>Practice Again</span>
                 </button>
 
                 <Link
                   href="/"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-900 px-5 py-3.5 text-sm font-semibold text-slate-400 transition hover:bg-slate-800 hover:text-white sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-5 py-3.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white sm:w-auto"
                 >
                   <BookOpen className="h-4 w-4" />
                   <span>All Scenarios</span>

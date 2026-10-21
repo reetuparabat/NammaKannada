@@ -10,7 +10,7 @@ import time
 
 from app.config import settings
 from app.database import engine, Base
-from app.routers import categories, scenarios, offline, admin
+from app.routers import categories, scenarios, offline, admin, voice
 
 # Configure logging (never log sensitive data)
 logging.basicConfig(level=logging.INFO if not settings.debug else logging.DEBUG)
@@ -67,6 +67,8 @@ app.include_router(categories.router, prefix=API_PREFIX)
 app.include_router(scenarios.router, prefix=API_PREFIX)
 app.include_router(offline.router, prefix=API_PREFIX)
 app.include_router(admin.router, prefix=API_PREFIX)
+app.include_router(voice.router, prefix=API_PREFIX)
+
 
 
 @app.get("/health", tags=["health"])

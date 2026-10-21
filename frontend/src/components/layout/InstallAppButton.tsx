@@ -74,10 +74,10 @@ export function InstallAppButton() {
       type="button"
       onClick={handleInstallClick}
       disabled={isInstalling}
-      className="inline-flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/15 px-3 py-1.5 text-xs font-semibold text-amber-400 shadow-sm transition hover:bg-amber-500/25 active:scale-95"
+      className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 bg-[#FFF9ED] px-3 py-1.5 text-xs font-semibold text-amber-800 shadow-sm transition hover:bg-amber-100 active:scale-95 dark:border-amber-500/40 dark:bg-amber-500/15 dark:text-amber-400 dark:hover:bg-amber-500/25"
       title="Install NammaKannada as Android Native App"
     >
-      <Smartphone className="h-3.5 w-3.5 text-amber-400" />
+      <Smartphone className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
       <span className="hidden sm:inline">Install Android App</span>
       <span className="sm:hidden">Install</span>
     </button>

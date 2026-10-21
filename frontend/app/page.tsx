@@ -19,6 +19,7 @@ import {
   Award,
   Smartphone,
   Layers,
+  Mic,
 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { Category } from '@/types';
@@ -62,9 +63,9 @@ export default function HomePage() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
       {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-slate-800/80 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 py-16 sm:py-24">
+      <section className="relative overflow-hidden border-b border-[#E2E8F0] dark:border-slate-800/80 bg-gradient-to-b from-white via-[#F8FAFC] to-[#F8FAFC] dark:from-slate-900 dark:via-slate-950 dark:to-slate-950 py-16 sm:py-24">
         {/* Ambient background glows */}
         <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 transform">
           <div className="h-[350px] w-[600px] rounded-full bg-amber-500/10 blur-[120px]" />
@@ -75,23 +76,23 @@ export default function HomePage() {
 
         <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-amber-400 backdrop-blur-md mb-6 shadow-sm shadow-amber-500/10">
-            <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 backdrop-blur-md mb-6 shadow-sm shadow-amber-500/10">
+            <Sparkles className="h-3.5 w-3.5 text-amber-500 dark:text-amber-400" />
             <span>Practical Kannada For Real Life</span>
           </div>
 
           {/* Titles */}
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl">
-            Namma<span className="text-amber-400">Kannada</span>
+          <h1 className="text-4xl font-extrabold tracking-tight text-[#172554] dark:text-white sm:text-6xl md:text-7xl">
+            Namma<span className="text-amber-500 dark:text-amber-400">Kannada</span>
           </h1>
 
           <div className="mt-3 flex items-center justify-center gap-3">
-            <span className="kannada-text text-2xl font-bold text-amber-400/95 sm:text-3xl">
+            <span className="kannada-text text-2xl font-bold text-amber-600 dark:text-amber-400/95 sm:text-3xl">
               ನಮ್ಮ ಕನ್ನಡ
             </span>
           </div>
 
-          <p className="mx-auto mt-4 max-w-2xl text-base text-slate-300 sm:text-lg sm:leading-relaxed">
+          <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600 dark:text-slate-300 sm:text-lg sm:leading-relaxed">
             Learn practical Kannada designed for students, new residents, and daily commuters in Karnataka. 
             Speak confidently with bus conductors, auto drivers, shopkeepers, and campus peers.
           </p>
@@ -103,67 +104,100 @@ export default function HomePage() {
 
           {/* Quick learning highlights */}
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 text-left">
-            <div className="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-3.5 backdrop-blur-sm">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+            <div className="flex items-start gap-3 rounded-xl border border-[#E2E8F0] dark:border-slate-800 bg-white dark:bg-slate-900/60 p-3.5 shadow-sm">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500 dark:text-amber-400">
                 <Compass className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">Situation Based</p>
-                <p className="text-[11px] text-slate-400">Travel, market, campus & health</p>
+                <p className="text-xs font-semibold text-[#172554] dark:text-white">Situation Based</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">Travel, market, campus & health</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-3.5 backdrop-blur-sm">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+            <div className="flex items-start gap-3 rounded-xl border border-[#E2E8F0] dark:border-slate-800 bg-white dark:bg-slate-900/60 p-3.5 shadow-sm">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500 dark:text-amber-400">
                 <MessageSquare className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">Guided Dialogues</p>
-                <p className="text-[11px] text-slate-400">Interactive conversational practice</p>
+                <p className="text-xs font-semibold text-[#172554] dark:text-white">Guided Dialogues</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">Interactive conversational practice</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-3.5 backdrop-blur-sm">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+            <div className="flex items-start gap-3 rounded-xl border border-[#E2E8F0] dark:border-slate-800 bg-white dark:bg-slate-900/60 p-3.5 shadow-sm">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500 dark:text-amber-400">
                 <Award className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">Interactive Quizzes</p>
-                <p className="text-[11px] text-slate-400">Instant feedback & scoring</p>
+                <p className="text-xs font-semibold text-[#172554] dark:text-white">Interactive Quizzes</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">Instant feedback & scoring</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-3.5 backdrop-blur-sm">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+            <div className="flex items-start gap-3 rounded-xl border border-[#E2E8F0] dark:border-slate-800 bg-white dark:bg-slate-900/60 p-3.5 shadow-sm">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500 dark:text-amber-400">
                 <Smartphone className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">Offline Ready</p>
-                <p className="text-[11px] text-slate-400">Access saved phrases anywhere</p>
+                <p className="text-xs font-semibold text-[#172554] dark:text-white">Offline Ready</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">Access saved phrases anywhere</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Featured Voice Translator Banner */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-4 mb-8">
+        <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 dark:border-amber-500/40 bg-gradient-to-r from-[#FFF9ED] via-white to-amber-50/60 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-emerald-950/30 p-6 sm:p-8 shadow-sm dark:shadow-xl">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20">
+                <Mic className="h-6 w-6" />
+              </div>
+              <div>
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-0.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
+                  <Sparkles className="h-3 w-3" />
+                  <span>NEW: Bidirectional Voice Translator</span>
+                </div>
+                <h3 className="mt-2 text-xl font-bold text-[#172554] dark:text-white sm:text-2xl">
+                  Voice Translator — English ↔ Kannada
+                </h3>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 max-w-xl">
+                  Speak in English or Kannada to convert speech into text, translate in real time, and listen with authentic pronunciation.
+                </p>
+              </div>
+            </div>
+
+            <Link
+              href="/translator"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 text-sm font-bold text-slate-950 shadow-md shadow-amber-500/20 transition hover:from-amber-400 hover:to-amber-500 active:scale-95"
+            >
+              <span>Open Voice Translator</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Main Categories Section */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
           <div>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
               <span>Categories</span>
               <span>•</span>
-              <span className="font-normal text-amber-300">ವಿಭಾಗಗಳು</span>
+              <span className="font-normal text-amber-600 dark:text-amber-300">ವಿಭಾಗಗಳು</span>
             </div>
-            <h2 className="mt-1 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            <h2 className="mt-1 text-2xl font-bold tracking-tight text-[#172554] dark:text-white sm:text-3xl">
               Everyday Situations
             </h2>
-            <p className="mt-1 text-sm text-slate-400">
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
               Choose a context to start learning essential phrases and guided conversations.
             </p>
           </div>
           {categories && categories.length > 0 && (
-            <span className="text-xs font-medium text-slate-400">
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
               Showing {categories.length} learning modules
             </span>
           )}
@@ -208,7 +242,7 @@ export default function HomePage() {
                 <Link
                   key={category.id}
                   href={`/categories/${category.id}`}
-                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/50 hover:bg-slate-900 hover:shadow-xl hover:shadow-amber-500/5"
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#E2E8F0] dark:border-slate-800 bg-white dark:bg-slate-900/70 p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/80 dark:hover:border-amber-500/50"
                 >
                   {/* Subtle top amber highlight gradient */}
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-amber-500/0 to-transparent transition-all duration-300 group-hover:via-amber-500/70" />
@@ -216,28 +250,28 @@ export default function HomePage() {
                   <div>
                     {/* Top row: Icon and scenario count */}
                     <div className="flex items-center justify-between">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-400 transition-colors duration-300 group-hover:border-amber-500/40 group-hover:bg-amber-500/20 group-hover:text-amber-300 shadow-sm">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-500 dark:text-amber-400 transition-colors duration-300 group-hover:border-amber-500/40 group-hover:bg-amber-500/20 group-hover:text-amber-600 dark:group-hover:text-amber-300 shadow-xs">
                         <IconComponent className="h-6 w-6" />
                       </div>
-                      <span className="inline-flex items-center rounded-full border border-slate-700/60 bg-slate-800/80 px-2.5 py-1 text-xs font-medium text-slate-300">
+                      <span className="inline-flex items-center rounded-full border border-[#E2E8F0] dark:border-slate-700/60 bg-[#F8FAFC] dark:bg-slate-800/80 px-2.5 py-1 text-xs font-medium text-slate-600 dark:text-slate-300">
                         {category.scenario_count}{' '}
                         {category.scenario_count === 1 ? 'scenario' : 'scenarios'}
                       </span>
                     </div>
 
                     {/* Category Title */}
-                    <h3 className="mt-5 text-xl font-bold tracking-tight text-white transition-colors duration-200 group-hover:text-amber-300">
+                    <h3 className="mt-5 text-xl font-bold tracking-tight text-[#172554] dark:text-white transition-colors duration-200 group-hover:text-amber-600 dark:group-hover:text-amber-300">
                       {category.name}
                     </h3>
 
                     {/* Description */}
-                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-400 group-hover:text-slate-300">
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300">
                       {category.description}
                     </p>
                   </div>
 
                   {/* Card Footer Link */}
-                  <div className="mt-6 flex items-center justify-between border-t border-slate-800/80 pt-4 text-xs font-semibold text-amber-400 transition-colors group-hover:text-amber-300">
+                  <div className="mt-6 flex items-center justify-between border-t border-[#E2E8F0] dark:border-slate-800/80 pt-4 text-xs font-semibold text-amber-600 dark:text-amber-400 transition-colors group-hover:text-amber-700 dark:group-hover:text-amber-300">
                     <span>Explore Scenarios</span>
                     <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                   </div>

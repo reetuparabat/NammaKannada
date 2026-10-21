@@ -176,9 +176,9 @@ export default function OfflinePage() {
   }, [displayData]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-24">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pb-24 dark:bg-slate-950 dark:text-slate-100">
       {/* Top Header Banner */}
-      <div className="border-b border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="border-b border-[#E2E8F0] bg-white py-10 px-4 sm:px-6 lg:px-8 dark:border-slate-800 dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -187,34 +187,34 @@ export default function OfflinePage() {
                 <span
                   className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold border ${
                     isOnline
-                      ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20'
-                      : 'bg-amber-500/10 text-amber-300 border-amber-500/20'
+                      ? 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20'
+                      : 'bg-[#FFF9ED] text-amber-800 border-[#FDE68A] dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-500/20'
                   }`}
                 >
                   {isOnline ? (
                     <>
-                      <Wifi className="h-3.5 w-3.5 text-emerald-400" />
+                      <Wifi className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                       <span>Online Mode</span>
                     </>
                   ) : (
                     <>
-                      <WifiOff className="h-3.5 w-3.5 text-amber-400" />
+                      <WifiOff className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                       <span>Offline Mode</span>
                     </>
                   )}
                 </span>
 
                 {cachedAt && (
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
                     Cached: {new Date(cachedAt).toLocaleDateString()}
                   </span>
                 )}
               </div>
 
-              <h1 className="mt-2 text-2xl font-extrabold text-white tracking-tight sm:text-3xl">
+              <h1 className="mt-2 text-2xl font-extrabold text-[#172554] tracking-tight sm:text-3xl dark:text-white">
                 Offline Phrasebook
               </h1>
-              <p className="mt-1 text-sm text-slate-400 sm:text-base">
+              <p className="mt-1 text-sm text-slate-600 sm:text-base dark:text-slate-400">
                 Download verified Kannada phrases for travel, shopping, and everyday emergencies when you don&apos;t have internet.
               </p>
             </div>
@@ -243,7 +243,7 @@ export default function OfflinePage() {
                 <button
                   type="button"
                   onClick={handleClearCache}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-xs font-medium text-slate-400 transition hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-600 transition hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-400 dark:hover:border-red-500/30"
                   title="Clear offline cache"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -255,8 +255,8 @@ export default function OfflinePage() {
 
           {/* Success Banner */}
           {saveSuccessMessage && (
-            <div className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-950/40 p-3 text-sm text-emerald-300">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+            <div className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-950/40 dark:text-emerald-300">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>{saveSuccessMessage}</span>
             </div>
           )}
@@ -271,7 +271,7 @@ export default function OfflinePage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search offline phrases in Kannada or English..."
-                  className="w-full rounded-xl border border-slate-700 bg-slate-900/90 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 transition focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full rounded-xl border border-[#E2E8F0] bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 dark:border-slate-700 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-500"
                 />
               </div>
             </div>
@@ -282,13 +282,13 @@ export default function OfflinePage() {
       {/* Main Content Area */}
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Offline Limitations Notice */}
-        <div className="mb-8 rounded-2xl border border-amber-500/20 bg-amber-950/20 p-4 sm:p-5 text-sm text-slate-300 flex items-start gap-3">
-          <Info className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
+        <div className="mb-8 rounded-2xl border border-[#FDE68A] bg-[#FFF9ED] p-4 sm:p-5 text-sm text-slate-800 shadow-sm flex items-start gap-3 dark:border-amber-500/20 dark:bg-amber-950/20 dark:text-slate-300">
+          <Info className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
           <div>
-            <h2 className="font-semibold text-amber-300 text-sm">
+            <h2 className="font-semibold text-amber-900 text-sm dark:text-amber-300">
               Offline Capabilities &amp; Limitations
             </h2>
-            <p className="mt-1 text-slate-300 text-xs sm:text-sm leading-relaxed">
+            <p className="mt-1 text-slate-700 text-xs sm:text-sm leading-relaxed dark:text-slate-300">
               When disconnected, your saved phrases, Kannada script, transliterations, and meanings remain 100% accessible locally.
               However, interactive multi-step branching dialogues, backend-scored quizzes, and speech audio playback require an active internet connection.
             </p>
@@ -355,23 +355,23 @@ export default function OfflinePage() {
                   return (
                     <div
                       key={category.id}
-                      className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden shadow-lg"
+                      className="rounded-2xl border border-[#E2E8F0] bg-white overflow-hidden shadow-sm dark:border-slate-800 dark:bg-slate-900/60"
                     >
                       {/* Category Header (Collapsible) */}
                       <button
                         type="button"
                         onClick={() => toggleCategory(category.id)}
-                        className="flex w-full items-center justify-between p-4 sm:p-5 text-left bg-slate-900 hover:bg-slate-850 transition"
+                        className="flex w-full items-center justify-between p-4 sm:p-5 text-left bg-white hover:bg-slate-50 transition dark:bg-slate-900 dark:hover:bg-slate-850"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 font-bold">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFF9ED] border border-[#FDE68A] text-amber-700 font-bold dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400">
                             {category.name.charAt(0)}
                           </div>
                           <div>
-                            <h2 className="text-base font-bold text-white sm:text-lg">
+                            <h2 className="text-base font-bold text-[#172554] sm:text-lg dark:text-white">
                               {category.name}
                             </h2>
-                            <span className="text-xs text-slate-400">
+                            <span className="text-xs text-slate-500 dark:text-slate-400">
                               {category.scenarios.length} Scenarios
                             </span>
                           </div>
@@ -388,11 +388,11 @@ export default function OfflinePage() {
 
                       {/* Scenarios & Phrases */}
                       {isExpanded && (
-                        <div className="p-4 sm:p-6 space-y-6 border-t border-slate-800">
+                        <div className="p-4 sm:p-6 space-y-6 border-t border-[#E2E8F0] dark:border-slate-800">
                           {category.scenarios.map((scenario) => (
                             <div key={scenario.id} className="space-y-3">
-                              <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                                <h3 className="text-sm font-bold text-amber-300">
+                              <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-2 dark:border-slate-800/80">
+                                <h3 className="text-sm font-bold text-[#172554] dark:text-amber-300">
                                   {scenario.title}
                                 </h3>
                                 <span className="text-xs font-mono text-slate-500">
@@ -405,17 +405,17 @@ export default function OfflinePage() {
                                 {scenario.phrases.map((phrase) => (
                                   <div
                                     key={phrase.id}
-                                    className="rounded-xl border border-slate-800 bg-slate-950/70 p-4 transition hover:border-slate-700"
+                                    className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition hover:border-amber-400 hover:bg-white hover:shadow-sm dark:border-slate-800 dark:bg-slate-950/70 dark:hover:border-slate-700"
                                   >
                                     <div className="flex items-start justify-between gap-2">
-                                      <p className="text-lg font-bold text-amber-200">
+                                      <p className="text-lg font-bold text-[#172554] dark:text-amber-200">
                                         {phrase.kannada_text}
                                       </p>
                                       {isOnline && (
                                         <button
                                           type="button"
                                           onClick={() => speakKannada(phrase.kannada_text)}
-                                          className="rounded p-1 text-slate-400 hover:text-amber-400"
+                                          className="rounded p-1 text-slate-400 hover:text-amber-600 dark:hover:text-amber-400"
                                           title="Pronounce"
                                         >
                                           <Volume2 className="h-3.5 w-3.5" />
@@ -424,18 +424,18 @@ export default function OfflinePage() {
                                     </div>
 
                                     {phrase.transliteration && (
-                                      <p className="mt-0.5 text-xs font-mono text-slate-400 italic">
+                                      <p className="mt-0.5 text-xs font-mono text-amber-700 italic dark:text-slate-400">
                                         {phrase.transliteration}
                                       </p>
                                     )}
 
-                                    <p className="mt-1.5 text-xs font-medium text-slate-200">
+                                    <p className="mt-1.5 text-xs font-medium text-slate-800 dark:text-slate-200">
                                       {phrase.english_meaning}
                                     </p>
 
                                     {phrase.context && (
-                                      <p className="mt-1 text-[11px] text-slate-400">
-                                        <span className="font-semibold text-slate-300">Tip: </span>
+                                      <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-400">
+                                        <span className="font-semibold text-slate-800 dark:text-slate-300">Tip: </span>
                                         {phrase.context}
                                       </p>
                                     )}

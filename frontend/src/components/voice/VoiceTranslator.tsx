@@ -82,6 +82,7 @@ export function VoiceTranslator() {
   const isListeningRef = useRef<boolean>(false);
   const finalTranscriptRef = useRef<string>('');
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isTranslatingRef = useRef<boolean>(false);
 
   // Check Web Speech API availability
   useEffect(() => {
@@ -148,6 +149,8 @@ export function VoiceTranslator() {
 
   // Trigger Translation
   const handleTranslate = useCallback(async (textToTranslate?: string) => {
+    if (isTranslatingRef.current) return;
+
     const text = (textToTranslate !== undefined ? textToTranslate : inputText).trim();
     if (!text) {
       setStatus('error');
@@ -155,6 +158,7 @@ export function VoiceTranslator() {
       return;
     }
 
+    isTranslatingRef.current = true;
     setStatus('translating');
     setStatusMessage('Translating with NammaKannada translation engine...');
     setTtsNotice(null);
@@ -169,6 +173,8 @@ export function VoiceTranslator() {
       const errorMsg =
         err instanceof Error ? err.message : 'Translation request failed. Please check your connection.';
       setStatusMessage(`Translation failed: ${errorMsg}`);
+    } finally {
+      isTranslatingRef.current = false;
     }
   }, [inputText, sourceLang, targetLang]);
 
@@ -719,6 +725,18 @@ export function VoiceTranslator() {
             >
               {statusMessage}
             </span>
+
+            {status === 'error' && (
+              <button
+                type="button"
+                onClick={() => handleTranslate()}
+                className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition dark:bg-rose-500/20 dark:text-rose-300 dark:border-rose-500/30 dark:hover:bg-rose-500/30 cursor-pointer"
+                title="Retry translation"
+              >
+                <RotateCcw className="h-3 w-3" />
+                <span>Retry</span>
+              </button>
+            )}
           </div>
 
           <div className="hidden sm:flex items-center gap-3 text-[11px] text-slate-500 dark:text-slate-400">

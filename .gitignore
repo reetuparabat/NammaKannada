@@ -1,9 +1,18 @@
-# Node & Next.js
-node_modules/
-.next/
-out/
-build/
-dist/
+# ==========================================
+# NammaKannada Monorepo / Workspace .gitignore
+# ==========================================
+
+# Sensitive Environment Configurations & Secrets (NEVER COMMIT)
+.env
+.env.*
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+!.env.example
+*.pem
+*.key
 
 # Python & Virtual Environments
 .venv/
@@ -14,30 +23,58 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.Python
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
+.tox/
+.nox/
 
-# Local Databases (dev artifacts)
+# Node & Next.js Build Outputs
+node_modules/
+.next/
+out/
+build/
+dist/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel & Cloud Deployments
+.vercel/
+
+# Local SQLite Databases (Contains local state / user data)
 *.db
 *.sqlite
 *.sqlite3
 !nammaconnect_bundled.db
 
-# Sensitive Environment Configurations
-.env
-.env.local
-.env.*.local
-!.env.example
+# Test Outputs & Automated Verification Artifacts
+test-results/
+playwright-report/
+blob-report/
+*_verification.png
+*.png.tmp
 
 # Logs & Temporary Files
 *.log
+logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# OS Files
+# IDE & Editor Configurations
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
 .DS_Store
 Thumbs.db
 desktop.ini
+ehthumbs.db

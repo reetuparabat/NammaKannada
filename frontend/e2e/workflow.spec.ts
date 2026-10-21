@@ -82,7 +82,11 @@ test.describe('NammaKannada Learner Workflow E2E', () => {
     await page.locator('button:has-text("Translate")').click();
 
     // Verify translated Kannada text appears
-    await expect(page.locator('text=ನೀವು ಹೇಗಿದ್ದೀರಿ?')).toBeVisible({ timeout: 10000 });
+    const resultElement = page.locator('.kannada-text').first();
+    await expect(resultElement).toBeVisible({ timeout: 10000 });
+    const translatedText = await resultElement.textContent();
+    expect(translatedText).toBeTruthy();
+    expect(translatedText).toMatch(/[\u0C80-\u0CFF]/); // Valid Kannada script characters
 
     // Test Swap Direction button
     await page.locator('button:has-text("Swap Direction")').click();

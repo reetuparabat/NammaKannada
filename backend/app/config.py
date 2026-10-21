@@ -14,8 +14,15 @@ class Settings(BaseSettings):
     debug: bool = False
     environment: str = "development"
     app_version: str = "1.0.0"
-    translation_provider: str = "mymemory"
-    translation_timeout_seconds: int = 10
+    translation_provider: str = "auto"
+    translation_timeout_seconds: float = 8.0
+    google_translate_api_key: Optional[str] = None
+    azure_translator_key: Optional[str] = None
+    azure_translator_region: str = "global"
+    mymemory_email: Optional[str] = "reetuparabat662@gmail.com"
+    mymemory_api_key: Optional[str] = None
+    libretranslate_url: Optional[str] = None
+    libretranslate_api_key: Optional[str] = None
     max_audio_upload_mb: int = 15
 
 

@@ -45,14 +45,22 @@ export async function apiFetch<T>(
     ...options,
   });
   if (!res.ok) {
-    const err: ApiError = new Error(`API error ${res.status}`);
-    err.status = res.status;
+    let detailMsg: string | undefined;
     try {
       const body = await res.json();
-      err.detail = body.detail;
+      detailMsg = body.detail;
     } catch {
       // Ignore JSON parse errors on non-JSON response
     }
+    const message =
+      detailMsg ||
+      (res.status === 502 || res.status === 503
+        ? 'Translation service is temporarily unavailable. Please verify your connection or try again shortly.'
+        : `Request failed (HTTP ${res.status})`);
+
+    const err: ApiError = new Error(message);
+    err.status = res.status;
+    err.detail = detailMsg;
     throw err;
   }
   return res.json();

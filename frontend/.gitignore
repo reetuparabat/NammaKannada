@@ -1,38 +1,59 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ==========================================
+# NammaKannada Frontend .gitignore
+# ==========================================
 
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
 
-# testing
+# Environment variables & secrets (NEVER COMMIT)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+.env.*
+!.env.example
+
+# Next.js build & export outputs
+/.next/
+/out/
+/build
+/dist
+
+# Testing & verification artifacts
 /coverage
 /test-results/
 /playwright-report/
+/blob-report/
+*_verification.png
+*.png.tmp
 
-# next.js
-/.next/
-/out/
+# Vercel & Deployment
+.vercel
 
-# production
-/build
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Debug & npm logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# local env files
-.env*.local
+# IDE & Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.pem
